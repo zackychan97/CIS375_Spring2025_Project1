@@ -37,7 +37,44 @@
   </li>
   <li>
     <strong>Backend:</strong>
-    <p>The backend will be implemented using PHP and MySQL. This component is crucial for secure user authentication, persistent data storage, and dynamic content management. Although alternative solutions may be evaluated as the project scales, a dedicated backend is essential for maintaining data integrity and ensuring smooth operation.
-</p>
+    <p>The backend will be implemented using PHP and MySQL. This component is crucial for secure user authentication, persistent data storage, and dynamic content management. Although alternative solutions may be evaluated as the project scales, a dedicated backend is essential for maintaining data integrity and ensuring smooth operation.</p>
+  </li>
+</ul>
+
+<h3>Frontend Development</h3>
+<p>The frontend of the application will include the following components:</p>
+<ul>
+  <li>
+    <strong>Homepage:</strong>
+    <p>A clean and intuitive landing page with easy navigation to different sections of the site.</p>
+  </li>
+  <li>
+    <strong>Project Listings:</strong>
+    <p>A dynamic page that displays all available projects, complete with search and filtering functionalities.</p>
+  </li>
+  <li>
+    <strong>Project Details:</strong>
+    <p>A dedicated view for each project that provides in-depth information such as descriptions, requirements, timelines, and faculty contact details.</p>
+  </li>
+  <li>
+    <strong>Collaboration Dashboard:</strong>
+    <p>A personalized dashboard where registered users can access collaboration tools, participate in discussion forums, and share resources.</p>
+  </li>
+</ul>
+
+<h3>Backend Development</h3>
+<p>The backend of the application will include the following components:</p>
+<ul>
+  <li>
+    <strong>Project Database:</strong>
+    <p>A centralized repository for storing project details, user information, and collaboration data.</p>
+  </li>
+  <li>
+    <strong>Content Management:</strong>
+    <p>APIs and server-side logic to manage project postings, updates, and user interactions.</p>
+  </li>
+  <li>
+    <strong>Scalability:</strong>
+    <p>Designed with future growth in mind, the backend architecture will allow for seamless integration of additional features such as real-time updates and notifications.</p>
   </li>
 </ul>
