@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<footer class="footer bg-light text-center mt-5 p-3">
 		<link rel="stylesheet" href="style.css">

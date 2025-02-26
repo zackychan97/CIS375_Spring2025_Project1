@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<div class="container mt-4">
 		<link rel="stylesheet" href="style.css">
