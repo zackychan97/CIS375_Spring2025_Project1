@@ -27,4 +27,5 @@
 </div>
 
 </html>
+<!-- This php includes the footer which is where the contact us, privacy policy, and about are located -->
 <?php include 'footer.php'; ?>
