@@ -1,7 +1,13 @@
+<!-- This document is the about us page which will let users know what we are about -->
+
+<!-- This php includes the header which is where the navigation is located -->
 <?php include 'header.php'; ?>
-<!doctype html>
+<!--Declares the document as an html5 doc  -->
+<!DOCTYPE html>
 <html>
+<!--This is a link to the style sheet so that the style is the same accross the board-->
 <link rel="stylesheet" href="style.css">
+
 <div class="container mt-4">
     <h2>About CollaboraNation</h2>
     <p>
