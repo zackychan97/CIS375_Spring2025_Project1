@@ -19,10 +19,6 @@
     <p>Faculty can create and post comprehensive descriptions of their research projects, including objectives, requirements, timelines, and expected outcomes.</p>
   </li>
   <li>
-    <strong>Collaboration Tools:</strong>
-    <p>The platform will offer discussion forums, file-sharing capabilities, and messaging systems to facilitate effective teamwork and ongoing communication among project participants.</p>
-  </li>
-  <li>
     <strong>Search and Filter:</strong>
     <p>Advanced search and filtering options will enable users to easily navigate projects by department, faculty member, project type, keywords, and other criteria.</p>
   </li>
