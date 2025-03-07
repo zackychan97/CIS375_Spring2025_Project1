@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="style.css">
 	<div class="container mt-4">
 		<h2>Privacy Policy</h2>
-		<p><em>Last updated: [Insert Date]</em></p>
+		<p><em>Last updated: 03 March 2025</em></p>
 
 		<p>
 			Welcome to CollaboraNation. This Privacy Policy is designed to inform you about how we collect, use, and protect your personal information when you visit our website or use our services.
