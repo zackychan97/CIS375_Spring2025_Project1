@@ -1,4 +1,4 @@
-<?php include 'header.php'; ?>
+<?php include "includes/header.php"; ?>
 
 	<div class="container mt-4">
 		<h2>Privacy Policy</h2>
