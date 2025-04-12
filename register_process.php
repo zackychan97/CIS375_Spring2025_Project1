@@ -9,6 +9,7 @@ require_once 'includes/db.php';
 $name = trim($_POST['fullname'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
+$confirmPassword = $_POST['confirm_password'] ?? ''; // Added for confirmation check
 $role = $_POST['role'] ?? '';
 
 //VALIDATE FORM DATA
@@ -25,8 +26,8 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // VALIDATE PASSWORD LENGTH
-if (strlen($password) < 6) {
-    echo "Password must be at least 6 characters long.";
+if (strlen($password) < 6 || $password !== $confirmPassword) {
+    echo "Password must be at least 6 characters and match the confirmation.";
     exit();
 }
 
