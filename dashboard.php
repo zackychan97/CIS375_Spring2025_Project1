@@ -1,4 +1,4 @@
-<?php include 'header.php'; ?>
+<?php include "includes/header.php"; ?>
 <?php session_start(); ?>
 
 <div class="container mt-5">
@@ -55,4 +55,4 @@
     </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include "includes/footer.php"; ?>

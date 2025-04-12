@@ -1,0 +1,23 @@
+/* Custom Styles */
+body {
+    font-family: Arial, sans-serif;
+	background-color: #f8f9fa;
+	
+}
+
+/* Jumbotron style override */
+.jumbotron {
+    background-color: #dae8fc;
+}
+
+/* Card spacing */
+.card {
+    margin-bottom: 20px;
+}
+
+/* Footer styling */
+.footer {
+    background-color: #eeeeee;
+    padding: 20px 0;
+    margin-top: 50px;
+}

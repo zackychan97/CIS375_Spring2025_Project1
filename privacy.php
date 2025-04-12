@@ -1,7 +1,5 @@
 <?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html>
-	<link rel="stylesheet" href="style.css">
+
 	<div class="container mt-4">
 		<h2>Privacy Policy</h2>
 		<p><em>Last updated: 03 March 2025</em></p>
@@ -51,5 +49,5 @@
 			If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at <a href="mailto:contact@collaboranation.com">contact@collaboranation.com</a>.
 		</p>
 	</div>
-</html>
-<?php include 'footer.php'; ?>
+
+<?php include "includes/footer.php"; ?>

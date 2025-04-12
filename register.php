@@ -1,7 +1,5 @@
-<?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html>
-	<link rel="stylesheet" href="style.css">
+<?php include "includes/header.php"; ?>
+
 	<div class="container mt-4">
 		<h2>Register</h2>
 		<form action="register_process.php" method="post">
@@ -25,5 +23,5 @@
 		</form>
 	<p class="mt-3">Already have an account? <a href="login.php">Login here</a>.</p>
 	</div>
-</html>
-<?php include 'footer.php'; ?>
+
+<?php include "includes/footer.php"; ?>
