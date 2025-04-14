@@ -1,6 +1,5 @@
 <?php include "includes/header.php"; ?>
 
-
 	<div class="container mt-4">
 		<h2>Login</h2>
 		<form action="login_process.php" method="post">

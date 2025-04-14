@@ -1,5 +1,16 @@
-<?php include "includes/header.php"; ?>
-<?php session_start(); ?>
+<?php 
+session_start(); 
+include "includes/header.php";
+
+// CAPTURE USER ROLE FROM SESSION, OR DEFAULT TO 'guest'
+$role = $_SESSION['role'] ?? 'guest';
+
+
+//REMOVE THIS LATER, FOR TESTING PURPOSES ONLY
+//$_SESSION['role'] = 'admin';
+
+
+?>
 
 <div class="container mt-5">
     <div class="row">
@@ -9,7 +20,12 @@
                 <a href="dashboard.php" class="list-group-item list-group-item-action active">Dashboard</a>
                 <a href="projects.php" class="list-group-item list-group-item-action">Browse Projects</a>
                 <a href="#" class="list-group-item list-group-item-action">Edit Profile</a>
-                <a href="index.php" class="list-group-item list-group-item-action text-danger">Logout</a>
+                <?php if ($_SESSION['role'] === 'admin') {
+                echo '<a href="manage_users.php" class="list-group-item list-group-item-action text-info">Admin: Manage Users</a>';
+}
+?>
+                <!-- LOGOUT ADDED, REDIRECT TO LOGOUT.PHP -->
+                <a href="logout.php" class="list-group-item list-group-item-action text-danger">Logout</a>
             </div>
         </div>
 
