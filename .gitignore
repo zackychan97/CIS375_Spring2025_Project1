@@ -89,3 +89,9 @@ lerna-debug.log
 
 # System Files
 .DS_Store
+
+#Tracking List
+tracking.md
+
+#functions
+functions.md

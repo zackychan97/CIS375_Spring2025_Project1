@@ -9,7 +9,7 @@ require_once 'includes/db.php';
 $name = trim($_POST['fullname'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
-$confirmPassword = $_POST['confirm_password'] ?? ''; // Added for confirmation check
+$confirmPassword = $_POST['confirm_password'] ?? '';
 $role = $_POST['role'] ?? '';
 
 //VALIDATE FORM DATA

@@ -20,8 +20,10 @@ $role = $_SESSION['role'] ?? 'guest';
                 <a href="dashboard.php" class="list-group-item list-group-item-action active">Dashboard</a>
                 <a href="projects.php" class="list-group-item list-group-item-action">Browse Projects</a>
                 <a href="#" class="list-group-item list-group-item-action">Edit Profile</a>
-                <?php if ($_SESSION['role'] === 'admin') {
+                <?php if ($role === 'admin') {
                 echo '<a href="manage_users.php" class="list-group-item list-group-item-action text-info">Admin: Manage Users</a>';
+                echo '<a href="manage_projects.php" class="list-group-item list-group-item-action text-info">Admin: Manage Projects</a>';
+                echo '<a href="manage_comments.php" class="list-group-item list-group-item-action text-info">Admin: Manage Comments</a>';
 }
 ?>
                 <!-- LOGOUT ADDED, REDIRECT TO LOGOUT.PHP -->
