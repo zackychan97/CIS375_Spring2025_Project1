@@ -1,6 +1,4 @@
-<?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html>
+<?php include "includes/header.php"; ?>
 	<div class="container mt-4">
 		<link rel="stylesheet" href="style.css">
 		<!-- Hero Section -->
@@ -42,5 +40,4 @@
 			</div>
 		</div>
 	</div>
-</html>
-<?php include 'footer.php'; ?>
+<?php include "includes/footer.php"; ?>

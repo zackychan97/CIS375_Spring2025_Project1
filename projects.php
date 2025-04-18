@@ -1,7 +1,5 @@
-<?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html>
-	<link rel="stylesheet" href="style.css">
+<?php include "includes/header.php"; ?>
+
 	<div class="container mt-4">
 		<h2>Project Listings</h2>
   
@@ -36,7 +34,7 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="card mb-4 shadow-sm">
-					<img src="placeholder.jpg" class="card-img-top" alt="Project Image">
+					<img src="assets/placeholder.jpg" class="card-img-top" alt="Project Image">
 					<div class="card-body">
 						<h5 class="card-title">Project Title</h5>
 						<p class="card-text">Brief description of the project.</p>
@@ -47,7 +45,7 @@
 			<!-- Repeat project cards as needed -->
 			<div class="col-md-4">
 				<div class="card mb-4 shadow-sm">
-					<img src="placeholder.jpg" class="card-img-top" alt="Project Image">
+					<img src="assets/placeholder.jpg" class="card-img-top" alt="Project Image">
 					<div class="card-body">
 						<h5 class="card-title">Project 2</h5>
 						<p class="card-text">Brief description of the project 2.</p>
@@ -67,5 +65,5 @@
 			</ul>
 		</nav>
 	</div>
-</html>
-<?php include 'footer.php'; ?>
+
+<?php include "includes/footer.php"; ?>

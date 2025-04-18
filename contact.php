@@ -1,7 +1,5 @@
-<?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html>
-	<link rel="stylesheet" href="style.css">
+<?php include "includes/header.php"; ?>
+
 	<div class="container mt-4">
 		<h2>Contact Us</h2>
 		<p>If you have any questions, comments, or feedback about CollaboraNation, please fill out the form below and we'll get back to you as soon as possible.</p>
@@ -25,5 +23,5 @@
 			<button type="submit" class="btn btn-primary">Send Message</button>
 		</form>
 	</div>
-</html>
-<?php include 'footer.php'; ?>
+
+	<?php include "includes/footer.php"; ?>
