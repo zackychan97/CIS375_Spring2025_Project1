@@ -5,7 +5,7 @@ include 'includes/header.php';
 //SWITCH THIS TO INCLUDES
 if ($_SESSION['role'] !== 'admin') {
     header("Location: dashboard.php");
-    exit;
+    exit();
 }
 
 

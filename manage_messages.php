@@ -12,8 +12,8 @@ if ($role !== 'admin') {
     exit();
 }
 
-// PREPARE QUERY TO SELECT ALL USERS
-$query = "SELECT id, name, email, role FROM users";
+// PREPARE QUERY TO SELECT ALL CONTACT MESSAGES
+$query = "SELECT id, name, email, subject, message FROM contact_messages";
 $result = mysqli_query($conn, $query);
 ?>
 
@@ -38,25 +38,22 @@ $result = mysqli_query($conn, $query);
 
         <!-- Main Content -->
         <div class="col-md-9">
-            <h2>Manage Users</h2>
-            <a href="add_user.php" class="btn btn-success mb-3">Add New User</a>
+            <h2>Manage Contact</h2>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Name</th><th>Email</th><th>Role</th><th>Actions</th>
+                        <th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    while ($user = mysqli_fetch_assoc($result)) {
+                    while ($message = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($user['name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($user['email']) . "</td>";
-                        echo "<td>" . htmlspecialchars($user['role']) . "</td>";
-                        // CAN SOMEONE FIGURE OUT SPACING THESE BUTTONS OUT?
-                        // I TRIED USING ME-1, BUT IT DIDN'T WORK
-                        echo "<td><a href='edit_user.php?id=" . $user['id'] . "' class='btn btn-sm btn-primary me-1 '>Edit</a>";
-                        echo "<a href='delete_user.php?id=" . $user['id'] . "' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>";                        
+                        echo "<td>" . htmlspecialchars($message['name']) . "</td>";
+                        echo "<td>" . htmlspecialchars($message['email']) . "</td>";
+                        echo "<td>" . htmlspecialchars($message['subject']) . "</td>";
+                        echo "<td>" . htmlspecialchars($message['message']) . "</td>";            
+                        echo "<td><a href='delete_message.php?id=" . $message['id'] . "' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this contact message?\")'>Delete</a></td>";                        
                         echo "</tr>";
                     }
                     ?>

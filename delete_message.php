@@ -9,20 +9,17 @@ if ($_SESSION['role'] !== 'admin') {
 }
 
 //CAPTURE USER ID FROM URL
-$userId = $_GET['id'] ?? null;
+$messageId = $_GET['id'] ?? null;
 
-
-//DELETE USER FROM DATABASE BASED ON ID FROM URL
-$query = "DELETE FROM users WHERE id = ?";
+//DELETE CONTACT FROM DATABASE BASED ON ID FROM URL
+$query = "DELETE FROM contact_messages WHERE id = ?";
 $stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "i", $userId);
+mysqli_stmt_bind_param($stmt, "i", $messageId);
 
-
-//REDIRECT AFTER SUCCESSFUL DELETION
 if (mysqli_stmt_execute($stmt)) {
-    header("Location: manage_users.php");
+    header("Location: manage_messages.php");
     exit();
 } else {
-    echo "Failed to delete user: " . mysqli_error($conn);
+    echo "Failed to delete message: " . mysqli_error($conn);
     exit();
 }

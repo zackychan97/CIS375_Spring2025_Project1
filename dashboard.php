@@ -23,7 +23,7 @@ $role = $_SESSION['role'] ?? 'guest';
                 <?php if ($role === 'admin') {
                 echo '<a href="manage_users.php" class="list-group-item list-group-item-action text-info">Admin: Manage Users</a>';
                 echo '<a href="manage_projects.php" class="list-group-item list-group-item-action text-info">Admin: Manage Projects</a>';
-                echo '<a href="manage_comments.php" class="list-group-item list-group-item-action text-info">Admin: Manage Comments</a>';
+                echo '<a href="manage_messages.php" class="list-group-item list-group-item-action text-info">Admin: Manage Messages/a>';
 }
 ?>
                 <!-- LOGOUT ADDED, REDIRECT TO LOGOUT.PHP -->

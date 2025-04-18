@@ -35,6 +35,7 @@ if (!$user) {
 <div class="container mt-5">
     <h2>Edit User</h2>
     <form action="edit_user_process.php" method="post">
+        <!-- PREFERRED METHOD BASED ON RESEARCH TO USE HIDDEN FIELD -->
         <input type="hidden" name="id" value="<?= $user['id'] ?>">
 
         <div class="form-group">
