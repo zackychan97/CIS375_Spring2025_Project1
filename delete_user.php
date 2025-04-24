@@ -1,15 +1,23 @@
 <?php
 session_start();
 require_once 'includes/db.php';
-
-//ADMIN CHECK - SWITCH THIS TO INCLUDES
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
+require_once 'includes/auth.php';
+requireAdmin();
 
 //CAPTURE USER ID FROM URL
 $userId = $_GET['id'] ?? null;
+
+//PREVENTS SELF-DELETION
+if ($userId == $_SESSION['user_id']) {
+    echo "You cannot delete your own account.";
+    exit();
+}
+
+//CHECK IF USER ID IS VALID AND NUMERIC
+if (!$userId || !is_numeric($userId)) {
+    echo "Invalid user ID.";
+    exit();
+}
 
 
 //DELETE USER FROM DATABASE BASED ON ID FROM URL

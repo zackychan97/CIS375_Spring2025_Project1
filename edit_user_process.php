@@ -1,12 +1,8 @@
 <?php
 session_start();
 require_once 'includes/db.php';
-
-//ADMIN CHECK - SWITCH THIS TO INCLUDES
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
+require_once 'includes/auth.php';
+requireAdmin();
 
 
 //CAPTURE INFO FROM POST DATA
@@ -15,6 +11,7 @@ $name = trim($_POST['name'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 $role = $_POST['role'] ?? '';
+$title = trim($_POST['title'] ?? '');
 
 //ENSURE ALL FIELDS ARE FILLED
 if (empty($name) || empty($email) || empty($role)) {
@@ -38,13 +35,13 @@ if (!empty($password) && strlen($password) < 6) {
 //BUILD TWO STATEMENTS - ONE FOR PASSWORD CHANGE, ONE FOR NO PASSWORD CHANGE
 if (!empty($password)) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $query = "UPDATE users SET name = ?, email = ?, role = ?, password = ? WHERE id = ?";
+    $query = "UPDATE users SET title = ?, name = ?, email = ?, role = ?, password = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "ssssi", $name, $email, $role, $hashedPassword, $userId);
+    mysqli_stmt_bind_param($stmt, "sssssi", $title, $name, $email, $role, $hashedPassword, $userId);
 } else {
-    $query = "UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?";
+    $query = "UPDATE users SET title = ?, name = ?, email = ?, role = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "sssi", $name, $email, $role, $userId);
+    mysqli_stmt_bind_param($stmt, "ssssi", $title, $name, $email, $role, $userId);
 }
 
 //EXECUTE THE QUERY AND REDIRECT

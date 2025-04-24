@@ -12,13 +12,13 @@ $email = trim($_POST['email'] ?? '');
 $new_password = $_POST['new_password'] ?? '';
 $confirm_password = $_POST['confirm_password'] ?? '';
 
-// Validate required fields
+// VALIDATE FIELDS ARE NOT EMPTY
 if (empty($name) || empty($email)) {
     echo "Name and email are required.";
     exit();
 }
 
-// Validate email format
+// VALIDATE EMAIL FORMAT
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo "Invalid email format.";
     exit();

@@ -1,15 +1,18 @@
 <?php
 session_start();
 require_once 'includes/db.php';
-
-//ADMIN CHECK - SWITCH THIS TO INCLUDES
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
+require_once 'includes/auth.php';
+requireAdmin();
 
 //CAPTURE USER ID FROM URL
 $messageId = $_GET['id'] ?? null;
+
+
+//CHECK IF MESSAGE ID IS VALID AND NUMERIC
+if (!$messageId || !is_numeric($messageId)) {
+    echo "Invalid message ID.";
+    exit();
+}
 
 //DELETE CONTACT FROM DATABASE BASED ON ID FROM URL
 $query = "DELETE FROM contact_messages WHERE id = ?";

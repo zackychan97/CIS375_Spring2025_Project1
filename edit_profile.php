@@ -1,9 +1,9 @@
 <?php
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
-requireLogin(); 
-include 'includes/header.php';
 
+include 'includes/header.php';
+requireLogin(); 
 
 // CAPTURE USER INFO FROM SESSION
 $name = $_SESSION['name'] ?? '';

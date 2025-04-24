@@ -1,15 +1,14 @@
 <?php
 session_start();
 require_once 'includes/db.php';
+require_once 'includes/auth.php';
 
-// ADMIN CHECK - SWITCH THIS TO INCLUDES
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
+requireAdmin();
+
 
 // CAPTURE FORM DATA
-$name     = trim($_POST['fullname'] ?? '');
+$title    = $_POST['title'] ?? '';
+$name     = trim($_POST['name'] ?? '');
 $email    = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 $role     = $_POST['role'] ?? '';
@@ -37,9 +36,9 @@ $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
 //ADD TO DATABASE
-$query = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
+$query = "INSERT INTO users (title, name, email, password, role) VALUES (?, ?, ?, ?, ?)";
 $stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $hashedPassword, $role);
+mysqli_stmt_bind_param($stmt, "sssss", $title, $name, $email, $hashedPassword, $role);
 
 if (mysqli_stmt_execute($stmt)) {
     header("Location: manage_users.php");

@@ -6,7 +6,8 @@ require_once 'includes/db.php';
 
 
 //CAPTURE FORM DATA
-$name = trim($_POST['fullname'] ?? '');
+$title = $_POST['title'] ?? ''; 
+$name = trim($_POST['name'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 $confirmPassword = $_POST['confirm_password'] ?? '';
@@ -54,17 +55,18 @@ if (mysqli_stmt_num_rows($stmt) > 0) {
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 //INSERT DATA INTO DATABASE
-$insertQuery = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
+$insertQuery = "INSERT INTO users (title, name, email, password, role) VALUES (?, ?, ?, ?, ?)";
 $insertStmt = mysqli_prepare($conn, $insertQuery);
-mysqli_stmt_bind_param($insertStmt, "ssss", $name, $email, $hashedPassword, $role);
+mysqli_stmt_bind_param($insertStmt, "sssss", $title, $name, $email, $hashedPassword, $role);
+
 
 //VERIFY INSERTION, IF SUCCESSFUL, REDIRECT TO LOGIN PAGE
 $success = mysqli_stmt_execute($insertStmt);
 
 if ($success) {
     header("Location: login.php");
-    exit;
+    exit();
 } else {
     echo "An error occurred during registration.";
-    exit;
+    exit();
 }

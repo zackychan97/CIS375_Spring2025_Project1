@@ -1,12 +1,7 @@
 <?php
-session_start();
+require_once 'includes/auth.php';
+requireAdmin();
 include 'includes/header.php';
-
-//SWITCH THIS TO INCLUDES
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
 
 
 ?>
@@ -14,9 +9,20 @@ if ($_SESSION['role'] !== 'admin') {
 <div class="container mt-5">
     <h2>Add New User</h2>
     <form action="add_user_process.php" method="post">
+    <div class="form-group">
+    <label for="title">Title</label>
+    <select name="title" id="title" class="form-control" >
+                <option value="">-- Select Title --</option>
+                <option value="Dr.">Dr.</option>
+                <option value="Prof.">Prof.</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+            </select>
+        </div>
         <div class="form-group">
-            <label for="fullname">Full Name</label>
-            <input type="text" class="form-control" name="fullname" id="fullname" required>
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name" id="name" required>
         </div>
         <div class="form-group">
             <label for="email">Email address</label>

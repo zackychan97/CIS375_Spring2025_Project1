@@ -6,14 +6,16 @@ USE collab_db;
 
 
 --CREATE USERS TABLE
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(10), 
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('student', 'professor', 'admin') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    role ENUM('Student', 'Professor', 'Admin') NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
 
 --TO CREATE ADMIN USER REGISTER AS A USER THEN CHANGE ROLE IN THE CONSOLE
 
@@ -31,10 +33,11 @@ CREATE TABLE contact_messages (
 CREATE TABLE projects (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
-    description TEXT,
-    created_by INT NOT NULL,  -- references users(id)
+    description TEXT NOT NULL,
+    college VARCHAR(255),                  
+    faculty_mentor_id INT NOT NULL,        
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id)
+    FOREIGN KEY (faculty_mentor_id) REFERENCES users(id)
 );
 
 -- CREATE PROJECT_MEMBERS TABLE
@@ -44,9 +47,12 @@ CREATE TABLE project_members (
     user_id INT NOT NULL,
     role ENUM('owner', 'contributor') DEFAULT 'contributor',
     joined_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    
 );
+
+
 
 -- CREATE COMMENTS TABLE
 CREATE TABLE comments (
@@ -55,7 +61,7 @@ CREATE TABLE comments (
     user_id INT NOT NULL,
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
