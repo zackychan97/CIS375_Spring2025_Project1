@@ -21,10 +21,10 @@ include "includes/header.php";
             <label for="college">College</label>
             <select name="college" id="college" class="form-control" >
                 <option value="">-- Select Title --</option>
-                <option value="artsScience">College of Arts & Sciences</option>
-                <option value="businessIS">College of Business & Information Systems</option>
-                <option value="beacom">The Beacom College of Computer & Cyber Sciences</option>
-                <option value="educHP">College of Education and Human Performance</option>
+                <option value="College of Arts & Sciences">College of Arts & Sciences</option>
+                <option value="College of Business & Information Systems">College of Business & Information Systems</option>
+                <option value="The Beacom College of Computer & Cyber Sciences">The Beacom College of Computer & Cyber Sciences</option>
+                <option value="College of Education and Human Performance">College of Education and Human Performance</option>
             </select>
         </div>
     <!-- EASIER TO COMPARE EMAIL VS. NAME -->
