@@ -1,6 +1,6 @@
 <?php
-session_start();
 require_once 'includes/db.php';
+require_once 'includes/project_functions.php';
 
 // CAPTURE FORM DATA
 $name = trim($_POST['name'] ?? '');
@@ -11,23 +11,24 @@ $message = trim($_POST['message'] ?? '');
 // VERIFY NO EMPTY FIELDS
 if (empty($name) || empty($email) || empty($subject) || empty($message)) {
     echo "All fields are required.";
-    exit;
+    exit();
 }
 
 // VERIFY EMAIL FORMAT
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo "Invalid email address.";
-    exit;
+    exit();
 }
 
 // INSERT DATA INTO DATABASE
-$stmt = mysqli_prepare($conn, "INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
+$query = "INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)";
+$stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $subject, $message);
 
 if (mysqli_stmt_execute($stmt)) {
     header("Location: contact.php");
     exit();
 } else {
-    echo "Failed to send message. " . mysqli_error($conn);
+    flashMessage("Failed to send message: " . mysqli_error($conn), "error");
     exit();
 }

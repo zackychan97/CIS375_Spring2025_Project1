@@ -4,8 +4,12 @@
 	<h2>Register</h2>
 	<form action="register_process.php" method="post">
 		<div class="form-group">
-			<label for="fullname">Full Name: </label>
-			<input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name" required>
+			<div class="form-group">
+				<label for="title">Title (optional)</label>
+				<input type="text" class="form-control" id="title" name="title" placeholder="e.g., Dr., Prof., Mr., Ms.">
+			</div>
+			<label for="name">Full Name: </label>
+			<input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
 		</div>
 		<div class="form-group">
 			<label for="email">Email Address: </label>

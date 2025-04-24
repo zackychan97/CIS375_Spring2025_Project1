@@ -1,6 +1,6 @@
 <?php include "includes/header.php"; ?>
 	<div class="container mt-4">
-		<link rel="stylesheet" href="style.css">
+		
 		<!-- Hero Section -->
 		<div class="jumbotron">
 			<h1 class="display-4">Collaborate and Innovate Together</h1>

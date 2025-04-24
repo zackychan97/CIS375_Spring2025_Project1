@@ -1,15 +1,20 @@
 <?php
 session_start();
 require_once 'includes/db.php';
+require_once 'includes/auth.php';
+require_once 'includes/project_functions.php';
 
-//ADMIN CHECK - SWITCH THIS TO INCLUDES
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
+requireAdmin();
 
 //CAPTURE USER ID FROM URL
 $messageId = $_GET['id'] ?? null;
+
+
+//CHECK IF MESSAGE ID IS VALID AND NUMERIC
+if (!$messageId || !is_numeric($messageId)) {
+    echo "Invalid message ID.";
+    exit();
+}
 
 //DELETE CONTACT FROM DATABASE BASED ON ID FROM URL
 $query = "DELETE FROM contact_messages WHERE id = ?";
@@ -20,6 +25,7 @@ if (mysqli_stmt_execute($stmt)) {
     header("Location: manage_messages.php");
     exit();
 } else {
-    echo "Failed to delete message: " . mysqli_error($conn);
+    flashMessage("Failed to delete message: " . mysqli_error($conn), "error");
+    
     exit();
 }

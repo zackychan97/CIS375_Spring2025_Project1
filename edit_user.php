@@ -1,14 +1,9 @@
 <?php
-session_start();
 require_once 'includes/db.php';
 require_once 'includes/header.php';
+require_once 'includes/auth.php';
+requireAdmin();
 
-
-//ADMIN CHECK - SWITCH THIS TO INCLUDES
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
 
 //CAPTURE USER ID FROM URL
 $userId = $_GET['id'] ?? null;
@@ -18,7 +13,7 @@ if (!$userId) {
 }
 
 //SELECT USER FROM DATABASE BASED ON ID FROM URL
-$query = "SELECT id, name, email, role FROM users WHERE id = ?";
+$query = "SELECT id, title, name, email, role FROM users WHERE id = ?";
 $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "i", $userId);
 mysqli_stmt_execute($stmt);
@@ -37,6 +32,11 @@ if (!$user) {
     <form action="edit_user_process.php" method="post">
         <!-- PREFERRED METHOD BASED ON RESEARCH TO USE HIDDEN FIELD -->
         <input type="hidden" name="id" value="<?= $user['id'] ?>">
+
+        <div class="form-group">
+            <label for="title">Title (optional)</label>
+            <input type="text" name="title" class="form-control" value="<?= htmlspecialchars($user['title']) ?>">
+        </div>
 
         <div class="form-group">
             <label for="name">Full Name</label>
@@ -67,4 +67,3 @@ if (!$user) {
 </div>
 
 <?php include 'includes/footer.php'; ?>
-
