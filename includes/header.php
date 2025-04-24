@@ -47,3 +47,9 @@ $loggedIn = isset($_SESSION['user_id']);
 		</ul>
 	</div>
 </nav>
+<?php
+
+require_once 'includes/project_functions.php';
+
+displayFlash();
+?>

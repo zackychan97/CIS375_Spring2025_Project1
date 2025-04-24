@@ -2,6 +2,7 @@
 session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
+require_once 'includes/project_functions.php';
 
 requireAdmin();
 
@@ -15,19 +16,20 @@ $role     = $_POST['role'] ?? '';
 
 // VALIDATE ALL FIELDS ARE FILLED
 if (empty($name) || empty($email) || empty($password) || empty($role)) {
-    echo "All fields are required.";
+    flashMessage("All fields are required.", "error");
     exit();
 }
 
 //VALIDATE EMAIL FORMAT
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "Invalid email address.";
+    flashMessage("Invalid email format.", "error");
     exit();
+    
 }
 
 //VALIDATE PASSWORD LENGTH
 if (strlen($password) < 6) {
-    echo "Password must be at least 6 characters.";
+    flashMessage("Password must be at least 6 characters.", "error");
     exit();
 }
 
@@ -41,9 +43,10 @@ $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "sssss", $title, $name, $email, $hashedPassword, $role);
 
 if (mysqli_stmt_execute($stmt)) {
+    flashMessage("User successfully created!", "success");
     header("Location: manage_users.php");
     exit();
 } else {
-    echo "Failed to create user: " . mysqli_error($conn);
+    flashMessage("Failed to create user: " . mysqli_error($conn), "error");
     exit();
 }

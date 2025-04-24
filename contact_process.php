@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/db.php';
+require_once 'includes/project_functions.php';
 
 // CAPTURE FORM DATA
 $name = trim($_POST['name'] ?? '');
@@ -28,6 +29,6 @@ if (mysqli_stmt_execute($stmt)) {
     header("Location: contact.php");
     exit();
 } else {
-    echo "Failed to send message. " . mysqli_error($conn);
+    flashMessage("Failed to send message: " . mysqli_error($conn), "error");
     exit();
 }

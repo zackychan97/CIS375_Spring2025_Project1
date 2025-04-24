@@ -4,6 +4,10 @@
 session_start(); 
 include "includes/db.php"; 
 require_once 'includes/auth.php'; 
+
+
+require_once 'includes/project_functions.php';
+// include 'includes/project_functions.php';
 requireLogin();
 
 // CAPTURE USER ID FROM SESSION
@@ -55,11 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_bind_param($memberStmt, "ii", $project_id, $faculty_id);
             mysqli_stmt_execute($memberStmt);
 
-            echo "Project successfully added!";
+            
+            flashMessage("Project successfully added!");
             header("Location: project.php?id=" . $project_id); 
             exit();
         } else {
-            echo "Error adding project. Please try again.";
+            flashMessage("Error adding project. Please try again.");
+            
         }
     }
 }

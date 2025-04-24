@@ -2,6 +2,8 @@
 session_start();
 include "includes/db.php"; 
 require_once 'includes/auth.php'; 
+require_once 'includes/project_functions.php';
+
 requireAdmin(); 
 
 
@@ -46,18 +48,27 @@ if ($project_id !== null) {
             $success = mysqli_stmt_execute($updateStmt);
 
             if ($success) {
-                echo "Project successfully updated!";
+                flashMessage("Project updated successfully!", "success");
+                
                 // REDIRECT TO THE PROJECT PAGE
                 header("Location: project.php?id=" . $project_id); 
                 exit();
             } else {
-                echo "Error updating project. Please try again.";
+                flashMessage("Error updating project. Please try again.", "error");
+                // REDIRECT BACK TO THE EDIT PAGE
+                header("Location: edit_project.php?id=" . $project_id);
             }
         } else {
-            echo "Error: The faculty email does not exist. Please ensure the faculty member is registered.";
+            flashMessage("Error: Faculty email does not exist.", "error");
+            // REDIRECT BACK TO THE EDIT PAGE
+            header("Location: edit_project.php?id=" . $project_id);
+            exit();
         }
     }
 } else {
-    echo "Error: Invalid project ID.";
+    flashMessage("Error: Invalid project ID.", "error");
+    // REDIRECT BACK TO THE EDIT PAGE
+    header("Location: edit_project.php?id=" . $project_id);
+    exit();
 }
 

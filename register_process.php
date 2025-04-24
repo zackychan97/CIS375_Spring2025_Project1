@@ -3,6 +3,7 @@
 //SESSION START AND DB CONNECTION
 session_start();
 require_once 'includes/db.php';
+require_once 'includes/project_functions.php';
 
 
 //CAPTURE FORM DATA
@@ -16,25 +17,29 @@ $role = $_POST['role'] ?? '';
 //VALIDATE FORM DATA
 // ENSURE ALL FIELDS ARE FILLED
 if (empty($name) || empty($email) || empty($password) || empty($role)) {
-    echo "All fields are required.";
+    flashMessage("All fields are required.", "error");
+    header("Location: register.php");
     exit();
 }
 
 // VALIDATE EMAIL FORMAT
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "Invalid email format.";
+    flashMessage("Invalid email format.", "error");
+    header("Location: register.php");
     exit();
 }
 
 // VALIDATE PASSWORD LENGTH
 if (strlen($password) < 6 || $password !== $confirmPassword) {
-    echo "Password must be at least 6 characters and match the confirmation.";
+    flashMessage("Password must be at least 6 characters and match the confirmation.", "error");
+    header("Location: register.php");
     exit();
 }
 
 // VALIDATE NAME LENGTH
 if (strlen($name) < 2) {
-    echo "Name must be at least 2 characters long.";
+    flashMessage("Name must be at least 2 characters long.", "error");
+    header("Location: register.php");
     exit();
 }
 
@@ -47,7 +52,8 @@ mysqli_stmt_store_result($stmt);
 
 //IF ROWS RETURNED, EMAIL ALREADY EXISTS
 if (mysqli_stmt_num_rows($stmt) > 0) {
-    echo "An account with that email already exists.";
+    flashMessage("An account with that email already exists.", "error");
+    header("Location: register.php");   
     exit();
 }
 
@@ -64,9 +70,11 @@ mysqli_stmt_bind_param($insertStmt, "sssss", $title, $name, $email, $hashedPassw
 $success = mysqli_stmt_execute($insertStmt);
 
 if ($success) {
+    flashMessage("Registration successful! You can now log in.", "success");
     header("Location: login.php");
     exit();
-} else {
+} else {    
+    flashMessage("An error occurred during registration. Please try again.", "error");
     echo "An error occurred during registration.";
     exit();
 }

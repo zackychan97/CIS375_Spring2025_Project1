@@ -2,6 +2,8 @@
 session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
+require_once 'includes/project_functions.php';
+
 requireLogin();
 
 $user_id = $_SESSION['user_id'] ?? null;
@@ -14,24 +16,28 @@ $confirm_password = $_POST['confirm_password'] ?? '';
 
 // VALIDATE FIELDS ARE NOT EMPTY
 if (empty($name) || empty($email)) {
-    echo "Name and email are required.";
+    flashMessage("Name and email are required.", "error");
+    header("Location: edit_profile.php");
     exit();
 }
 
 // VALIDATE EMAIL FORMAT
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "Invalid email format.";
+    flashMessage("Invalid email format.", "error");
+    header("Location: edit_profile.php");
     exit();
 }
 
 // CHECK FOR PASSWORD CHANGE
 if (!empty($new_password) || !empty($confirm_password)) {
     if ($new_password !== $confirm_password) {
-        echo "Passwords do not match.";
+        flashMessage("Passwords do not match.", "error");
+        header("Location: edit_profile.php");
         exit();
     }
     if (strlen($new_password) < 6) {
-        echo "Password must be at least 6 characters.";
+        flashMessage("Password must be at least 6 characters.", "error");
+        header("Location: edit_profile.php");
         exit();
     }
 
@@ -51,11 +57,12 @@ if (!empty($new_password) || !empty($confirm_password)) {
 if (mysqli_stmt_execute($stmt)) {
     $_SESSION['name'] = $name;
     $_SESSION['email'] = $email;
-
+    flashMessage("Profile updated successfully!", "success");
     header("Location: dashboard.php");
     exit();
 } else {
-    echo "Update failed: " . mysqli_error($conn);
+    flashMessage("Failed to update profile: " . mysqli_error($conn), "error");
+    header("Location: edit_profile.php");
     exit();
 }
 

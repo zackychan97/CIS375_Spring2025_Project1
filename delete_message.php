@@ -2,6 +2,8 @@
 session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
+require_once 'includes/project_functions.php';
+
 requireAdmin();
 
 //CAPTURE USER ID FROM URL
@@ -23,6 +25,7 @@ if (mysqli_stmt_execute($stmt)) {
     header("Location: manage_messages.php");
     exit();
 } else {
-    echo "Failed to delete message: " . mysqli_error($conn);
+    flashMessage("Failed to delete message: " . mysqli_error($conn), "error");
+    
     exit();
 }

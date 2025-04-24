@@ -2,6 +2,8 @@
 session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
+require_once 'includes/project_functions.php';
+
 requireAdmin();
 
 
@@ -15,19 +17,22 @@ $title = trim($_POST['title'] ?? '');
 
 //ENSURE ALL FIELDS ARE FILLED
 if (empty($name) || empty($email) || empty($role)) {
-    echo "All fields are required.";
+    flashMessage("All fields are required.", "error");
+    header("Location: edit_user.php?id=" . $userId);
     exit();
 }
 
 // VALIDATE EMAIL FORMAT
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "Invalid email format.";
+    flashMessage("Invalid email format.", "error");
+    header("Location: edit_user.php?id=" . $userId);
     exit();
 }
 
 // VALIDATE PASSWORD LENGTH
 if (!empty($password) && strlen($password) < 6) {
-    echo "Password must be at least 6 characters.";
+    flashMessage("Password must be at least 6 characters.", "error");
+    header("Location: edit_user.php?id=" . $userId);
     exit();
 }
 
@@ -46,9 +51,10 @@ if (!empty($password)) {
 
 //EXECUTE THE QUERY AND REDIRECT
 if (mysqli_stmt_execute($stmt)) {
+    flashMessage("User updated successfully!", "success");
     header("Location: manage_users.php");
     exit();
 } else {
-    echo "Failed to update user. " . mysqli_error($conn);
+    flashMessage("Failed to update user. Please try again.", "error");
     exit();
 }

@@ -2,6 +2,8 @@
 session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
+require_once 'includes/project_functions.php';
+
 requireAdmin();
 
 //CAPTURE USER ID FROM URL
@@ -10,7 +12,8 @@ $projectId = $_GET['id'] ?? null;
 
 //CHECK IF USER ID IS VALID AND NUMERIC
 if (!$projectId || !is_numeric($projectId)) {
-    echo "Invalid project ID.";
+    flashMessage("Invalid project ID.", "error");
+    header("Location: manage_projects.php");
     exit();
 }
 
@@ -26,6 +29,6 @@ if (mysqli_stmt_execute($stmt)) {
     header("Location: manage_projects.php");
     exit();
 } else {
-    echo "Failed to delete project: " . mysqli_error($conn);
+    flashMessage("Failed to delete project: " . mysqli_error($conn), "error");
     exit();
 }

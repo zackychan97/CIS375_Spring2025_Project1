@@ -3,6 +3,7 @@
 //SESSION START AND DB CONNECTION
 session_start();
 require_once 'includes/db.php';
+require_once 'includes/project_functions.php';
 
 //CAPTURE FORM DATA
 $email = trim($_POST['email'] ?? '');
@@ -46,11 +47,13 @@ if (mysqli_stmt_num_rows($stmt) === 1) {
         header("Location: dashboard.php"); 
         exit();
     } else {
-        echo "Invalid login credentials.";
+        flashMessage("Invalid login credentials.", "error");
+        header("Location: login.php");
         exit();
     }
 } else {
-    echo "Invalid login credentials.";
+    flashMessage("Invalid login credentials.", "error");
+    header("Location: login.php");
     exit();
 }
 

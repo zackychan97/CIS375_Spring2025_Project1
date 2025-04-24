@@ -1,8 +1,8 @@
 <?php
 require_once 'includes/auth.php';
-requireAdmin();
-include 'includes/header.php';
 
+include 'includes/header.php';
+requireAdmin();
 
 ?>
 
