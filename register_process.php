@@ -75,6 +75,5 @@ if ($success) {
     exit();
 } else {    
     flashMessage("An error occurred during registration. Please try again.", "error");
-    echo "An error occurred during registration.";
     exit();
 }

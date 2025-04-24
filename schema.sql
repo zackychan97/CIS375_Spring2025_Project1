@@ -37,7 +37,7 @@ CREATE TABLE projects (
     college VARCHAR(255),                  
     faculty_mentor_id INT NOT NULL,        
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (faculty_mentor_id) REFERENCES users(id)
+    FOREIGN KEY (faculty_mentor_id) REFERENCES users(id) ON DELETE CASCADE,
 );
 
 -- CREATE PROJECT_MEMBERS TABLE
@@ -48,21 +48,21 @@ CREATE TABLE project_members (
     role ENUM('owner', 'contributor') DEFAULT 'contributor',
     joined_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     
 );
 
 
 
 -- CREATE COMMENTS TABLE
-CREATE TABLE comments (
+CREATE TABLE project_comments (
     id INT PRIMARY KEY AUTO_INCREMENT,
     project_id INT NOT NULL,
     user_id INT NOT NULL,
-    content TEXT NOT NULL,
+    comment TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- CREATE CONTRIBUTIONS TABLE

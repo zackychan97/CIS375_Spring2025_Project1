@@ -2,12 +2,23 @@
 include "includes/header.php";
 include "includes/auth.php";
 include "includes/project_functions.php";
-requireLogin();
+include "includes/comments.php"; // Include comments functionality
+// requireLogin();
 require_once 'includes/db.php';
+
+ // Process comment submission
 
 $project_id = $_GET['id'] ?? null;
 $user_id = $_SESSION['user_id'] ?? null;
+$isOwner = false;
+$isLoggedIn = false;
+if (isset($_SESSION['user_id'])) {
+    $isLoggedIn = true;
+} else {
+    $isLoggedIn = false;
+}
 
+processCommentSubmission($conn, $project_id);
 // GRABS PROJECT DETAILS FROM FUNCTION
 $project = getProjectDetails($conn, $project_id);
 
@@ -15,6 +26,7 @@ if (!$project) {
     echo "PROJECT NOT FOUND.";
     exit();
 }
+
 
 //QUERY TO CHECK IF USER IS ALREADY A MEMBER OF THE PROJECT
 $userQuery = "SELECT * FROM project_members WHERE user_id = ? AND project_id = ?";
@@ -55,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 //PREPARD STATEMENT TO GET PROJECT TEAM MEMBERS
-$teamQuery = "SELECT users.title, users.name, project_members.role 
+$teamQuery = "SELECT users.title, users.name, users.id, project_members.role 
               FROM project_members 
               JOIN users ON project_members.user_id = users.id 
               WHERE project_members.project_id = ?
@@ -64,6 +76,18 @@ $teamStmt = mysqli_prepare($conn, $teamQuery);
 mysqli_stmt_bind_param($teamStmt, "i", $project_id);
 mysqli_stmt_execute($teamStmt);
 $teamResult = mysqli_stmt_get_result($teamStmt);
+
+
+foreach ($teamResult as $member) {
+        // CHECKS IF THE USER IS THE OWNER OF THE PROJECT
+    if ($member['role'] == 'owner' && $member['id'] == $user_id) {
+        $isOwner = true;
+        break;
+    }
+}
+// RESETS POINTER TO THE START OF THE RESULT SET
+mysqli_data_seek($teamResult, 0);
+
 
 ?>
 
@@ -88,73 +112,43 @@ $teamResult = mysqli_stmt_get_result($teamStmt);
 
     <!-- Project Team -->
     <div class="mb-4">
-        <h3>Project Team</h3>
-        <ul>
-            <?php while ($member = mysqli_fetch_assoc($teamResult)) { 
-                if ($member['role'] == 'owner') { ?>
-                    <li><strong>Faculty Lead: </strong><?= htmlspecialchars($member['name']) ?>  </li>
-                <?php } else { ?>
-                <li><?= htmlspecialchars($member['name']) ?> </li>
-            <?php } }?>
-        </ul>
-    </div>
+  <h3>Project Team</h3>
+  <ul>
+    <!-- LOOPS THROUGH MEMBERS TAGGING OWNER WITH STRONG HTML -->
+    <?php while ($member = mysqli_fetch_assoc($teamResult)): ?>
+      <li>
+        <?php if ($member['role'] === 'owner'): ?>
+          <strong>Faculty Lead:</strong>
+        <?php endif; ?>
+        <?= htmlspecialchars($member['name']) ?>
+      </li>
+    <?php endwhile; ?>
+  </ul>
+</div>
 
     <!-- Action Buttons -->
+    <?php if ($isLoggedIn): ?>
     <div class="mb-4">
-        <?php if ($isRegistered) {
-            echo '<form method="POST">
-            <button type="submit" name="leave_project" class="btn btn-danger">Leave Project</button>
-            </form>';
-        } else {
-            echo '<form method="POST">
-            <button type="submit" name="join_project" class="btn btn-primary">Join Project</button>
-            
-            </form>';
-        }
-        ?>
+        <?php if ($isRegistered): ?>
+            <form method="POST"><button type="submit" name="leave_project" class="btn btn-danger">Leave Project</button></form>
+        <?php else: ?>
+            <form method="POST"><button type="submit" name="join_project" class="btn btn-primary">Join Project</button></form>
+        <?php endif; ?>
+
+        <?php if ($isOwner): ?>
+            <form method="POST" action="owner_delete_prj.php?id=<?php echo $project['id']; ?>" onsubmit="return confirm('Are you sure you want to delete this project?');">
+                <button type="submit" name="delete_project" class="btn btn-danger">Delete Project</button>
+            </form>
+        <?php endif; ?>
+    </div>
+
         <a href="#" class="btn btn-secondary">Share Project</a>
         <a href="#" class="btn btn-info">Download Resources</a>
         <a href="#" class="btn btn-secondary">Upload Resources for Review</a>
     </div>
+    <?php endif; ?>
 
     <!-- Discussion/Comments Section -->
-    <div class="mb-4">
-        <h3>Discussion Forum</h3>
-        <!-- COMMENTS NEED WORK -->
-        <!-- Comment Form -->
-        <form method="POST" action="">
-            <div class="form-group">
-                <textarea class="form-control" name="comment" rows="3" placeholder="Write your comment here..." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Comment</button>
-        </form>
-
-        <!-- Store comments using sessions -->
-        <?php
-        $project_title = "Project Title"; // Change this dynamically if needed
-
-        if (!isset($_SESSION['comments'][$project_title])) {
-            $_SESSION['comments'][$project_title] = [];
-        }
-
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["comment"])) {
-            $new_comment = htmlspecialchars($_POST["comment"]); // Prevent XSS
-            array_push($_SESSION['comments'][$project_title], $new_comment);
-        }
-        ?>
-
-        <!-- Display Comments -->
-        <div class="card mt-3">
-            <div class="card-body">
-                <?php
-                if (!empty($_SESSION['comments'][$project_title])) {
-                    foreach ($_SESSION['comments'][$project_title] as $comment) {
-                        echo "<div class='alert alert-secondary' role='alert'>" . $comment . "</div>";
-                    }
-                } else {
-                    echo "<p>No comments yet. Be the first to comment!</p>";
-                }
-                ?>
-            </div>
+    <?php commentsSection($conn, $project_id); ?>
 
             <?php include "includes/footer.php"; ?>
