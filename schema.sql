@@ -69,3 +69,19 @@ CREATE TABLE contributions (
     FOREIGN KEY (project_id) REFERENCES projects(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+-- CREATE UPLOADS TABLE
+CREATE TABLE uploads (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,           -- who uploaded it
+    project_id INT,                 -- optional: if tied to a project
+    contribution_id INT,            -- optional: if tied to a contribution
+    file_name VARCHAR(255) NOT NULL, -- original file name (like "design_doc.pdf")
+    file_type VARCHAR(100) NOT NULL, -- MIME type (like "application/pdf" or "image/jpeg")
+    file_size INT,                  -- in bytes
+    file_data LONGBLOB NOT NULL,     -- the raw binary file data
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (contribution_id) REFERENCES contributions(id)
+);
