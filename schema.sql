@@ -47,6 +47,17 @@ CREATE TABLE project_members (
     user_id INT NOT NULL,
     role ENUM('owner', 'contributor') DEFAULT 'contributor',
     joined_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- CREATE COMMENTS TABLE
+CREATE TABLE comments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     
@@ -74,4 +85,20 @@ CREATE TABLE contributions (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- CREATE UPLOADS TABLE
+CREATE TABLE uploads (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,      
+    project_id INT,                
+    contribution_id INT,            
+    file_name VARCHAR(255) NOT NULL, 
+    file_type VARCHAR(100) NOT NULL, 
+    file_size INT,                
+    file_data LONGBLOB NOT NULL,   
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (contribution_id) REFERENCES contributions(id)
 );
