@@ -1,7 +1,6 @@
-<?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html>
-<link rel="stylesheet" href="style.css">
+<?php include "includes/header.php"; ?>
+
+
 <div class="container mt-4">
     <h2>About CollaboraNation</h2>
     <p>
@@ -20,5 +19,4 @@
     </p>
 </div>
 
-</html>
-<?php include 'footer.php'; ?>
+<?php include "includes/footer.php"; ?>

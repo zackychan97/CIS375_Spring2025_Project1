@@ -1,7 +1,21 @@
-<?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html>
-	<link rel="stylesheet" href="style.css">
+<?php include "includes/header.php"; 
+require_once 'includes/db.php';
+
+
+$query = "
+    SELECT 
+        projects.id, 
+        projects.title,
+		projects.description,
+        projects.college, 
+        users.name AS mentor_name, 
+        users.title AS mentor_title 
+    FROM projects 
+    JOIN users ON projects.faculty_mentor_id = users.id
+";
+$result = mysqli_query($conn, $query);
+?>
+
 	<div class="container mt-4">
 		<h2>Project Listings</h2>
   
@@ -33,29 +47,22 @@
 		</form>
   
   <!-- Project Listings (example cards) -->
-		<div class="row">
-			<div class="col-md-4">
-				<div class="card mb-4 shadow-sm">
-					<img src="placeholder.jpg" class="card-img-top" alt="Project Image">
-					<div class="card-body">
-						<h5 class="card-title">Project Title</h5>
-						<p class="card-text">Brief description of the project.</p>
-						<a href="project.php?id=1" class="btn btn-primary">View Details</a>
-					</div>
-				</div>
-			</div>
-			<!-- Repeat project cards as needed -->
-			<div class="col-md-4">
-				<div class="card mb-4 shadow-sm">
-					<img src="placeholder.jpg" class="card-img-top" alt="Project Image">
-					<div class="card-body">
-						<h5 class="card-title">Project 2</h5>
-						<p class="card-text">Brief description of the project 2.</p>
-						<a href="project.php?id=2" class="btn btn-primary">View Details</a>
-					</div>
-				</div>
-			</div>
-		</div>
+  <div class="row">
+        <?php
+        while ($project = mysqli_fetch_assoc($result)) {
+            echo "<div class='col-md-4'>";
+            echo "<div class='card mb-4 shadow-sm'>";
+            echo "<img src='assets/placeholder.jpg' class='card-img-top' alt='Project Image'>";
+            echo "<div class='card-body'>";
+            echo "<h5 class='card-title'>" . htmlspecialchars($project['title']) . "</h5>";
+            echo "<p class='card-text'>" . substr(htmlspecialchars($project['description']), 0, 150) . "..." . "</p>";
+            echo "<p><strong>Faculty:</strong> " . htmlspecialchars($project['mentor_name']) . "</p>";
+            echo "<p><strong>Department:</strong> " . htmlspecialchars($project['college']) . "</p>";
+            echo "<a href='project.php?id=" . $project['id'] . "' class='btn btn-primary'>View Details</a>";
+            echo "</div></div></div>";
+        }
+        ?>
+    </div>
   
 		<!-- Pagination (static example) -->
 		<nav aria-label="Project pagination">
@@ -67,5 +74,5 @@
 			</ul>
 		</nav>
 	</div>
-</html>
-<?php include 'footer.php'; ?>
+
+<?php include "includes/footer.php"; ?>
