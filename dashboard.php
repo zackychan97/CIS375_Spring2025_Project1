@@ -37,6 +37,7 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </div>
             <div class="col-md-4 text-md-end mt-4 mt-md-0">
                 <a href="edit_profile.php" class="btn btn-secondary me-2 px-2 py-1">Edit Profile</a>
+                <a href="delete_profile.php" class="btn btn-secondary me-2 px-2 py-1">Delete Profile</a>
                 <a href="logout.php" class="btn btn-outline px-2 py-1">Logout</a>
             </div>
         </div>

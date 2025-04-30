@@ -6,7 +6,7 @@ include "includes/comments.php"; // Include comments functionality
 // requireLogin();
 require_once 'includes/db.php';
 
- // Process comment submission
+// Process comment submission
 
 $project_id = $_GET['id'] ?? null;
 $user_id = $_SESSION['user_id'] ?? null;
@@ -79,7 +79,7 @@ $teamResult = mysqli_stmt_get_result($teamStmt);
 
 
 foreach ($teamResult as $member) {
-        // CHECKS IF THE USER IS THE OWNER OF THE PROJECT
+    // CHECKS IF THE USER IS THE OWNER OF THE PROJECT
     if ($member['role'] == 'owner' && $member['id'] == $user_id) {
         $isOwner = true;
         break;
@@ -98,20 +98,32 @@ mysqli_data_seek($teamResult, 0);
             <div class="project-header-content">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 style="margin-bottom: 0;"><?= htmlspecialchars($project['title']) ?></h2>
-                    
+
                     <?php if ($isLoggedIn): ?>
-                        <?php if ($isRegistered): ?>
+                        <?php if ($isRegistered && ! $isOwner): ?>
+                            <!-- Only non-owner members can leave -->
                             <form method="POST">
-                                <button type="submit" name="leave_project" class="btn btn-secondary">Leave Project</button>
+                                <input
+                                    type="hidden"
+                                    name="project_id"
+                                    value="<?= $projectId ?>">
+                                <button
+                                    type="submit"
+                                    name="leave_project"
+                                    class="btn btn-secondary">
+                                    Leave Project
+                                </button>
                             </form>
-                        <?php else: ?>
+                        <?php elseif (!$isRegistered): ?>
+
                             <form method="POST">
+                                <input type="hidden" name="project_id" value="<?= $projectId ?>">
                                 <button type="submit" name="join_project" class="btn btn-secondary">Join Project</button>
                             </form>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
-                
+
                 <div class="project-meta mt-3">
                     <span><strong>Faculty:</strong> <?= htmlspecialchars(trim($project['mentor_title'] . " " . $project['mentor_name'])) ?></span>
                     <span><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></span>
@@ -126,21 +138,21 @@ mysqli_data_seek($teamResult, 0);
             <div class="project-details glass">
                 <h3 class="section-title">Project Description</h3>
                 <p><?= htmlspecialchars($project['description']) ?></p>
-                
+
                 <?php if ($isLoggedIn && $isOwner): ?>
-                <div class="project-actions mt-4">
-                    <a href="edit_project.php?id=<?= $project['id'] ?>" class="btn btn-secondary">Edit Project</a>
-                    <form method="POST" action="owner_delete_prj.php?id=<?= $project['id'] ?>" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                        <button type="submit" name="delete_project" class="btn btn-outline">Delete Project</button>
-                    </form>
-                </div>
+                    <div class="project-actions mt-4">
+                        <a href="edit_project.php?id=<?= $project['id'] ?>" class="btn btn-secondary">Edit Project</a>
+                        <form method="POST" action="owner_delete_prj.php?id=<?= $project['id'] ?>" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to delete this project?');">
+                            <button type="submit" name="delete_project" class="btn btn-outline">Delete Project</button>
+                        </form>
+                    </div>
                 <?php endif; ?>
-                
+
                 <div class="mt-4">
                     <a href="#" class="btn btn-outline">Share Project</a>
                 </div>
             </div>
-            
+
             <!-- Right Side - Team and Resources -->
             <div class="project-sidebar">
                 <!-- Team Members -->
@@ -163,20 +175,20 @@ mysqli_data_seek($teamResult, 0);
                         <?php endwhile; ?>
                     </div>
                 </div>
-                
+
                 <!-- Resources -->
                 <?php if ($isRegistered || $isOwner): ?>
-                <div class="project-resources glass">
-                    <h3 class="section-title">Resources</h3>
-                    <div class="resources-actions">
-                        <a href="#" class="btn btn-secondary btn-sm mb-2">Download Resources</a>
-                        <a href="#" class="btn btn-secondary btn-sm">Upload Resources</a>
+                    <div class="project-resources glass">
+                        <h3 class="section-title">Resources</h3>
+                        <div class="resources-actions">
+                            <a href="#" class="btn btn-secondary btn-sm mb-2">Download Resources</a>
+                            <a href="#" class="btn btn-secondary btn-sm">Upload Resources</a>
+                        </div>
                     </div>
-                </div>
                 <?php endif; ?>
             </div>
         </div>
-        
+
         <!-- Comments Section -->
         <div class="glass ">
             <div style="padding: 30px;">
