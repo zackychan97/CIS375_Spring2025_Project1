@@ -1,19 +1,30 @@
-
-
-<div class="col-md-3">
-    <div class="list-group">
-        <a href="dashboard.php" class="list-group-item list-group-item-action active">Dashboard</a>
-        <a href="projects.php" class="list-group-item list-group-item-action">Browse Projects</a>
+<div class="dashboard-sidebar glass">
+    <ul class="dashboard-menu">
+        <li class="dashboard-menu-item">
+            <a href="dashboard.php" class="dashboard-menu-link active">Dashboard</a>
+        </li>
         <?php if ($role === 'admin' || $role ==='professor'): ?>
-            <a href="add_project.php" class="list-group-item list-group-item-action">Add Project</a>
+            <li class="dashboard-menu-item">
+                <a href="add_project.php" class="dashboard-menu-link">Add Project</a>
+            </li>
         <?php endif; ?>
-        <a href="edit_profile.php" class="list-group-item list-group-item-action">Edit Profile</a>
+        <li class="dashboard-menu-item">
+            <a href="edit_profile.php" class="dashboard-menu-link">Edit Profile</a>
+        </li>
         
         <?php if ($role === 'admin'): ?>
-            <a href="manage_users.php" class="list-group-item list-group-item-action text-info">Admin: Manage Users</a>
-            <a href="manage_projects.php" class="list-group-item list-group-item-action text-info">Admin: Manage Projects</a>
-            <a href="manage_messages.php" class="list-group-item list-group-item-action text-info">Admin: Manage Messages</a>
+            <li class="dashboard-menu-item">
+                <a href="manage_users.php" class="dashboard-menu-link">Admin: Manage Users</a>
+            </li>
+            <li class="dashboard-menu-item">
+                <a href="manage_projects.php" class="dashboard-menu-link">Admin: Manage Projects</a>
+            </li>
+            <li class="dashboard-menu-item">
+                <a href="manage_messages.php" class="dashboard-menu-link">Admin: Manage Messages</a>
+            </li>
         <?php endif; ?>
-        <a href="logout.php" class="list-group-item list-group-item-action text-danger">Logout</a>
-    </div>
+        <li class="dashboard-menu-item">
+            <a href="logout.php" class="dashboard-menu-link logout">Logout</a>
+        </li>
+    </ul>
 </div>

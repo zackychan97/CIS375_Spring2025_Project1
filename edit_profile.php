@@ -36,7 +36,7 @@ $email = $_SESSION['email'] ?? '';
             <input type="password" class="form-control" name="confirm_password" id="confirm_password">
         </div>
 
-        <button type="submit" class="btn btn-primary">Update Profile</button>
+        <button type="submit" class="btn btn-secondary">Update Profile</button>
     </form>
 </div>
 

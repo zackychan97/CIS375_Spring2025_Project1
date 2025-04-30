@@ -27,50 +27,55 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
 
 <div class="container mt-5">
-    <div class="row">
-        <!-- SIDEBAR.PHP -->
-        <?php include "includes/sidebar.php"; ?>
-
-        <!-- Main Content -->
-        <div class="col-md-9">
-            <div class="card shadow-lg p-4">
-                <h2 class="text-center">Welcome, <?= htmlspecialchars($fullname) ?></h2>
-                <p class="text-center">Here you can manage your projects and view your profile.</p>
-
-                <!-- User Projects Section -->
-                <h3 class="mt-4">Your Projects</h3>
-                <div class="row">
-                    <!-- CHECKS FOR EMPTY RESULTS FROM QUERY -->
-                    <?php if (empty($projects)): ?>
-                        <p>You are not part of any projects yet. Join one today!</p>
-                    <?php else: ?>
-                        <!-- LOOPS THROUGH RESULTS, BUILDS CARD FOR EACH PROJECT -->
-                        <?php foreach ($projects as $project): ?>
-                            <div class="col-md-6 mb-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= htmlspecialchars($project['title']) ?></h5>
-                                        <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-info">View Project</a>
+    <!-- Dashboard Main Section -->
+    <div class="glass p-5 mb-4">
+        <!-- Header and Action Buttons -->
+        <div class="row welcome-section">
+            <div class="col-md-8">
+                <h2 class="mb-3">Welcome, <?= htmlspecialchars($fullname) ?></h2>
+                <p class="text-muted"><?= htmlspecialchars($role) ?></p>
+            </div>
+            <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                <a href="edit_profile.php" class="btn btn-secondary me-2 px-2 py-1">Edit Profile</a>
+                <a href="logout.php" class="btn btn-outline px-2 py-1">Logout</a>
+            </div>
+        </div>
+        
+        <!-- Projects -->
+        <h3 class="section-heading">My Projects</h3>
+        
+        <?php if (empty($projects)): ?>
+            <div class="text-center p-5">
+                <p class="mb-4">You are not part of any projects yet.</p>
+                <a href="projects.php" class="btn btn-secondary px-4 py-2">Browse Available Projects</a>
+            </div>
+        <?php else: ?>
+            <div class="row px-4">
+                <?php foreach ($projects as $project): ?>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card glass project-card h-100">
+                            <div class="card-content">
+                                <h4 class="card-title mb-3"><?= htmlspecialchars($project['title']) ?></h4>
+                                <p class="card-text mb-4"><?= htmlspecialchars(substr($project['description'], 0, 100)) . (strlen($project['description']) > 100 ? '...' : '') ?></p>
+                                <div class="mt-3">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span><strong>Role:</strong> <?= htmlspecialchars($project['role']) ?></span>
+                                        <span><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></span>
                                     </div>
+                                    <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-secondary w-100 py-2">View Details</a>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
-        </div>
-                    <nav aria-label="Project pagination">
-			<ul class="pagination">
-				<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">Next</a></li>
-			</ul>
-		</nav>
+        <?php endif; ?>
         
-                </div>
+        <?php if ($role === 'Admin' || $role === 'Professor'): ?>
+            <div class="text-center mt-4 pb-3">
+                <a href="add_project.php" class="btn btn-primary px-4 py-2">Create New Project</a>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
 
