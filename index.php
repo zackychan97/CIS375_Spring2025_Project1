@@ -39,10 +39,8 @@ $featuredProjects = mysqli_fetch_all($featuredResult, MYSQLI_ASSOC);
             </div>
         </div>
     </section>
-    </div>
-    </div>
-    
 
+    
 <!-- Featured Projects -->
 <section class="mb-5">
     <h2 class="text-center mb-3">Featured Projects</h2>
