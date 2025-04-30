@@ -39,15 +39,10 @@ $featuredProjects = mysqli_fetch_all($featuredResult, MYSQLI_ASSOC);
             </div>
         </div>
     </section>
-
-<<<<<<< HEAD
-=======
     </div>
     </div>
     
 
-    
->>>>>>> d0bbb3627d4820b4c23745f895ba15831ba49494
 <!-- Featured Projects -->
 <section class="mb-5">
     <h2 class="text-center mb-3">Featured Projects</h2>
