@@ -1,5 +1,5 @@
-<?php 
-include "includes/header.php"; 
+<?php
+include "includes/header.php";
 require_once 'includes/db.php';
 
 // Capture search filters
@@ -90,38 +90,53 @@ $result = mysqli_stmt_get_result($stmt);
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Discover Research Projects</h2>
-  
-<!-- Search & Filter Form -->
-<form class="form-inline mb-4" method="GET" action="projects.php">
-        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search Projects..." value="<?= htmlspecialchars($search) ?>">
 
-        <select class="form-control mr-sm-2" name="department">
-            <option value="">Department</option>
-            <?php while ($row = mysqli_fetch_assoc($collegeResult)): ?>
-                <option value="<?= htmlspecialchars($row['college']) ?>" <?= ($department === $row['college']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($row['college']) ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
+    <!-- Search & Filter Form -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10">
+            <form method="GET" action="projects.php">
 
-        <select class="form-control mr-sm-2" name="faculty">
-            <option value="">Faculty</option>
-            <?php while ($row = mysqli_fetch_assoc($facultyResult)): ?>
-                <option value="<?= htmlspecialchars($row['name']) ?>" <?= ($faculty === $row['name']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($row['name']) ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
+                <div class="input-group mb-2">
+                    <input class="form-control" type="search" name="search" placeholder="Search Projects..." value="<?= htmlspecialchars($search) ?>">
+                </div>
 
-        <button class="btn btn-outline-success my-2" type="submit">Search</button>
-    </form>
-  
+                <div class="row mb-2">
+                    <div class="col-md-4 mb-2 mb-md-0">
+                        <select class="form-control" name="department">
+                            <option value="">Department</option>
+                            <?php while ($row = mysqli_fetch_assoc($collegeResult)): ?>
+                                <option value="<?= htmlspecialchars($row['college']) ?>" <?= ($department === $row['college']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($row['college']) ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-2 mb-md-0">
+                        <select class="form-control" name="faculty">
+                            <option value="">Faculty</option>
+                            <?php while ($row = mysqli_fetch_assoc($facultyResult)): ?>
+                                <option value="<?= htmlspecialchars($row['name']) ?>" <?= ($faculty === $row['name']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($row['name']) ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-secondary px-4 py-2" type="submit">Search Projects</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
     <!-- Project Listings  -->
     <div class="row">
         <?php
         if (mysqli_num_rows($result) > 0) {
             while ($project = mysqli_fetch_assoc($result)) {
-                ?>
+        ?>
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card glass h-100 project-card">
                         <div class="card-content">
@@ -135,7 +150,7 @@ $result = mysqli_stmt_get_result($stmt);
                         </div>
                     </div>
                 </div>
-                <?php
+        <?php
             }
         } else {
             echo '<div class="col-12 text-center"><p>No projects found. Try adjusting your search criteria.</p></div>';
@@ -145,29 +160,30 @@ $result = mysqli_stmt_get_result($stmt);
 
     <!-- Pagination -->
     <nav aria-label="Project pagination">
-    <div class="pagination-container mt-4">
-        <ul class="pagination justify-content-center">
-            <?php if ($page > 1): ?>
-                <li class="pagination-item"><a class="pagination-link pagination-prev" href="<?= buildPageUrl($page - 1) ?>">Previous</a></li>
-            <?php endif; ?>
+        <div class="pagination-container mt-4">
+            <ul class="pagination justify-content-center">
+                <?php if ($page > 1): ?>
+                    <li class="pagination-item"><a class="pagination-link pagination-prev" href="<?= buildPageUrl($page - 1) ?>">Previous</a></li>
+                <?php endif; ?>
 
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <li class="pagination-item <?= ($i === $page) ? 'active' : '' ?>">
-                    <a class="pagination-link" href="<?= buildPageUrl($i) ?>"><?= $i ?></a>
-                </li>
-            <?php endfor; ?>
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="pagination-item <?= ($i === $page) ? 'active' : '' ?>">
+                        <a class="pagination-link" href="<?= buildPageUrl($i) ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
 
-            <?php if ($page < $totalPages): ?>
-                <li class="pagination-item"><a class="pagination-link pagination-next" href="<?= buildPageUrl($page + 1) ?>">Next</a></li>
-            <?php endif; ?>
-        </ul>
+                <?php if ($page < $totalPages): ?>
+                    <li class="pagination-item"><a class="pagination-link pagination-next" href="<?= buildPageUrl($page + 1) ?>">Next</a></li>
+                <?php endif; ?>
+            </ul>
         </div>
     </nav>
 </div>
 
 <?php
 // Helper to preserve filter parameters during pagination
-function buildPageUrl($page) {
+function buildPageUrl($page)
+{
     $query = $_GET;
     $query['page'] = $page;
     return '?' . http_build_query($query);
