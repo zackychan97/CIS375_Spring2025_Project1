@@ -37,7 +37,7 @@ CREATE TABLE projects (
     college VARCHAR(255),                  
     faculty_mentor_id INT NOT NULL,        
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (faculty_mentor_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (faculty_mentor_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- CREATE PROJECT_MEMBERS TABLE

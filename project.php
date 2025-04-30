@@ -92,63 +92,98 @@ mysqli_data_seek($teamResult, 0);
 ?>
 
 <div class="container mt-4">
-    <!-- Project Header -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h2 class="card-title"><?= htmlspecialchars($project['title']) ?></h2>
-            <p class="card-text">
-                <strong>Faculty:</strong> <?= htmlspecialchars(trim($project['mentor_title'] . " " . $project['mentor_name'])) ?> |
-                <strong>College:</strong> <?= htmlspecialchars($project['college']) ?> |
-                <strong>Timeline:</strong> Jan 2025 - Dec 2025
-            </p>
+    <div class="project-container">
+        <!-- Project Header -->
+        <div class="project-header glass">
+            <div class="project-header-content">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 style="margin-bottom: 0;"><?= htmlspecialchars($project['title']) ?></h2>
+                    
+                    <?php if ($isLoggedIn): ?>
+                        <?php if ($isRegistered): ?>
+                            <form method="POST">
+                                <button type="submit" name="leave_project" class="btn btn-secondary">Leave Project</button>
+                            </form>
+                        <?php else: ?>
+                            <form method="POST">
+                                <button type="submit" name="join_project" class="btn btn-secondary">Join Project</button>
+                            </form>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                
+                <div class="project-meta mt-3">
+                    <span><strong>Faculty:</strong> <?= htmlspecialchars(trim($project['mentor_title'] . " " . $project['mentor_name'])) ?></span>
+                    <span><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></span>
+                    <span><strong>Timeline:</strong> Jan 2025 - Dec 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Content -->
+        <div class="project-content">
+            <!-- Left Side - Project Details -->
+            <div class="project-details glass">
+                <h3 class="section-title">Project Description</h3>
+                <p><?= htmlspecialchars($project['description']) ?></p>
+                
+                <?php if ($isLoggedIn && $isOwner): ?>
+                <div class="project-actions mt-4">
+                    <a href="edit_project.php?id=<?= $project['id'] ?>" class="btn btn-secondary">Edit Project</a>
+                    <form method="POST" action="owner_delete_prj.php?id=<?= $project['id'] ?>" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to delete this project?');">
+                        <button type="submit" name="delete_project" class="btn btn-outline">Delete Project</button>
+                    </form>
+                </div>
+                <?php endif; ?>
+                
+                <div class="mt-4">
+                    <a href="#" class="btn btn-outline">Share Project</a>
+                </div>
+            </div>
+            
+            <!-- Right Side - Team and Resources -->
+            <div class="project-sidebar">
+                <!-- Team Members -->
+                <div class="project-team glass">
+                    <h3 class="section-title">Project Team</h3>
+                    <div class="team-members">
+                        <?php while ($member = mysqli_fetch_assoc($teamResult)): ?>
+                            <div class="team-member">
+                                <div class="team-member-info">
+                                    <h4><?= htmlspecialchars($member['title'] . ' ' . $member['name']) ?></h4>
+                                    <p class="member-role">
+                                        <?php if ($member['role'] === 'owner'): ?>
+                                            Faculty Lead
+                                        <?php else: ?>
+                                            <?= ucfirst(htmlspecialchars($member['role'])) ?>
+                                        <?php endif; ?>
+                                    </p>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </div>
+                
+                <!-- Resources -->
+                <?php if ($isRegistered || $isOwner): ?>
+                <div class="project-resources glass">
+                    <h3 class="section-title">Resources</h3>
+                    <div class="resources-actions">
+                        <a href="#" class="btn btn-secondary btn-sm mb-2">Download Resources</a>
+                        <a href="#" class="btn btn-secondary btn-sm">Upload Resources</a>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        
+        <!-- Comments Section -->
+        <div class="glass ">
+            <div style="padding: 30px;">
+                <?php commentsSection($conn, $project_id); ?>
+            </div>
         </div>
     </div>
-
-    <!-- Project Details -->
-    <div class="mb-4">
-        <h3>Project Description</h3>
-        <p><?= htmlspecialchars($project['description']) ?></p>
-    </div>
-
-    <!-- Project Team -->
-    <div class="mb-4">
-  <h3>Project Team</h3>
-  <ul>
-    <!-- LOOPS THROUGH MEMBERS TAGGING OWNER WITH STRONG HTML -->
-    <?php while ($member = mysqli_fetch_assoc($teamResult)): ?>
-      <li>
-        <?php if ($member['role'] === 'owner'): ?>
-          <strong>Faculty Lead:</strong>
-        <?php endif; ?>
-        <?= htmlspecialchars($member['name']) ?>
-      </li>
-    <?php endwhile; ?>
-  </ul>
 </div>
 
-    <!-- Action Buttons -->
-    <?php if ($isLoggedIn): ?>
-    <div class="mb-4">
-        <?php if ($isRegistered): ?>
-            <form method="POST"><button type="submit" name="leave_project" class="btn btn-danger">Leave Project</button></form>
-        <?php else: ?>
-            <form method="POST"><button type="submit" name="join_project" class="btn btn-primary">Join Project</button></form>
-        <?php endif; ?>
-
-        <?php if ($isOwner): ?>
-            <form method="POST" action="owner_delete_prj.php?id=<?php echo $project['id']; ?>" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                <button type="submit" name="delete_project" class="btn btn-danger">Delete Project</button>
-            </form>
-        <?php endif; ?>
-    </div>
-
-        <a href="#" class="btn btn-secondary">Share Project</a>
-        <a href="#" class="btn btn-info">Download Resources</a>
-        <a href="#" class="btn btn-secondary">Upload Resources for Review</a>
-    </div>
-    <?php endif; ?>
-
-    <!-- Discussion/Comments Section -->
-    <?php commentsSection($conn, $project_id); ?>
-
-            <?php include "includes/footer.php"; ?>
+<?php include "includes/footer.php"; ?>
