@@ -1,43 +1,50 @@
-<?php include "includes/header.php"; ?>
-	<div class="container mt-4">
-		
-		<!-- Hero Section -->
-		<div class="jumbotron">
-			<h1 class="display-4">Collaborate and Innovate Together</h1>
-			<p class="lead">Welcome to CollaboraNation – a platform where faculty and students unite to work on innovative research projects.</p>
-	
-			<hr class="my-4">
-			<a class="btn btn-primary btn-lg" href="projects.php" role="button">Explore Projects</a>
-			<a class="btn btn-success btn-lg" href="login.php" role="button">Join the Community</a>
-		</div>
-  
-			<!-- Featured Projects (static example) -->
-		<h2>Featured Projects</h2>
-		
-		<div class="row">
-			<div class="col-md-4">
-				<div class="card mb-4 shadow-sm">
-					<img src="placeholder.jpg" class="card-img-top" alt="Project Image">
-					<div class="card-body">
-						<h5 class="card-title">Project Title</h5>
-						<p class="card-text">Brief description of the project.</p>
-						<a href="project.php?id=1" class="btn btn-primary">View Details</a>
-					</div>
-				</div>
-			</div>
-			
-			<!-- Additional project cards can be added here -->
-		
-			<div class="col-md-4">
-				<div class="card mb-4 shadow-sm">
-					<img src="placeholder.jpg" class="card-img-top" alt="Project Image">
-					<div class="card-body">
-						<h5 class="card-title">Project 2</h5>
-						<p class="card-text">This is a description of project 2</p>
-						<a href="project.php?id=2" class="btn btn-primary">View Details</a>
-					</div>
-				</div>
-			</div>
-		</div>
+<?php 
+include "includes/header.php"; 
+require_once 'includes/db.php';
+
+ //Query three random projects
+ $featuredQuery = "SELECT id, title, description FROM projects ORDER BY RAND() LIMIT 3";
+ $featuredResult = mysqli_query($conn, $featuredQuery);
+ $featuredProjects = mysqli_fetch_all($featuredResult, MYSQLI_ASSOC);
+?>
+
+<div class="container mt-4">
+
+    <!-- Hero Section -->
+    <div class="jumbotron">
+        <h1 class="display-4">Collaborate and Innovate Together</h1>
+        <p class="lead">Welcome to CollaboraNation - a platform where faculty and students unite to work on innovative research projects.</p>
+
+		<hr class="my-4">
+        <a class="btn btn-primary btn-lg" href="projects.php" role="button">Explore Projects</a>
+        <a class="btn btn-success btn-lg" href="login.php" role="button">Join the Community</a>
+    </div>
+
+    <!-- 3 Random Featured projects -->
+    <h2>Featured Projects</h2>
+
+    <div class="row">
+        <?php if (!empty($featuredProjects)): ?>
+            <?php foreach ($featuredProjects as $project): ?>
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="assets/placeholder.jpg" class="card-img-top" alt="Project Image">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($project['title']) ?></h5>
+                            <p class="card-text"><?= htmlspecialchars($project['description']) ?></p>
+                            <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+        <?php else: ?>
+            <p class="text-muted">No featured projects available at this time.</p>
+        <?php endif; ?>
+    
 	</div>
+</div>
+
+
+
 <?php include "includes/footer.php"; ?>
