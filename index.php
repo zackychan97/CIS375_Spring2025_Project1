@@ -44,32 +44,38 @@ require_once 'includes/db.php';
     </section>
 
     </div>
+    </div>
+    
 
-    <!-- 3 Random Featured projects -->
-    <h2>Featured Projects</h2>
-
-    <div class="row">
+    
+<!-- Featured Projects -->
+<section class="mb-5">
+    <h2 class="text-center mb-3">Featured Projects</h2>
+    <div class="row justify-content-center">
         <?php if (!empty($featuredProjects)): ?>
             <?php foreach ($featuredProjects as $project): ?>
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img src="assets/placeholder.jpg" class="card-img-top" alt="Project Image">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($project['title']) ?></h5>
-                            <p class="card-text"><?= htmlspecialchars($project['description']) ?></p>
-                            <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-primary">View Details</a>
+                <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                    <div class="card glass project-card h-100 p-2 small">
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title mb-2"><?= htmlspecialchars($project['title']) ?></h6>
+                            <p class="card-text mb-2">
+                                <?= substr(htmlspecialchars($project['description']), 0, 600) ?>
+                                <?= strlen($project['description']) > 600 ? '...' : '' ?>
+                            </p>
+                            <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-sm btn-secondary mt-auto">View</a>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
-
         <?php else: ?>
-            <p class="text-muted">No featured projects available at this time.</p>
+            <div class="col-12 text-center">
+                <p class="text-muted">No featured projects available at this time.</p>
+            </div>
         <?php endif; ?>
-    
-	</div>
+    </div>
+</section>
 
-</div>
+
 		
 
 <?php include "includes/footer.php"; ?>
