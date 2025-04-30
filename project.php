@@ -148,9 +148,7 @@ mysqli_data_seek($teamResult, 0);
                     </div>
                 <?php endif; ?>
 
-                <div class="mt-4">
-                    <a href="#" class="btn btn-outline">Share Project</a>
-                </div>
+                
             </div>
 
             <!-- Right Side - Team and Resources -->
@@ -181,8 +179,8 @@ mysqli_data_seek($teamResult, 0);
                     <div class="project-resources glass">
                         <h3 class="section-title">Resources</h3>
                         <div class="resources-actions">
-                            <a href="#" class="btn btn-secondary btn-sm mb-2">Download Resources</a>
-                            <a href="#" class="btn btn-secondary btn-sm">Upload Resources</a>
+                            <a href="download.php" class="btn btn-secondary btn-sm mb-2">Download Resources</a>
+                            <a href="upload.php" class="btn btn-secondary btn-sm">Upload Resources</a>
                         </div>
                     </div>
                 <?php endif; ?>
