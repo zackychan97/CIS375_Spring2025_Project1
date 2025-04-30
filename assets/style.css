@@ -987,7 +987,11 @@ a:hover {
   padding: 0 15px;
 }
 
+/*Dropdown search display*/
 select option {
   background-color: #ffffff; /* fallback for native dropdown */
   color: #000000;
 }
+
+
+

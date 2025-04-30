@@ -2,42 +2,34 @@
 include "includes/header.php";
 require_once 'includes/db.php';
 
-// Capture search filters
+// Capture filters
 $search = $_GET['search'] ?? '';
 $department = $_GET['department'] ?? '';
 $faculty = $_GET['faculty'] ?? '';
-
-// Pagination setup
-$projectsPerPage = 6;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
-$offset = ($page - 1) * $projectsPerPage;
+$limit = 4;
+$offset = ($page - 1) * $limit;
 
-// Dynamic dropdown values
-$collegeResult = mysqli_query($conn, "SELECT DISTINCT college FROM projects ORDER BY college");
+// Dynamic dropdowns
+$departmentResult = mysqli_query($conn, "SELECT DISTINCT college FROM projects ORDER BY college");
 $facultyResult = mysqli_query($conn, "
     SELECT DISTINCT users.name 
     FROM users 
-    JOIN projects ON projects.faculty_mentor_id = users.id 
+    JOIN projects ON users.id = projects.faculty_mentor_id 
     ORDER BY users.name
 ");
 
 // Base query
-$baseQuery = "
-    FROM projects 
-    JOIN users ON projects.faculty_mentor_id = users.id
-    WHERE 1=1
-";
-
+$conditions = "WHERE 1=1";
 $params = [];
 $types = '';
-$conditions = '';
 
-// Add filters to query
 if (!empty($search)) {
-    $conditions .= " AND (projects.title LIKE ? OR projects.description LIKE ?)";
+    $conditions .= " AND (projects.title LIKE ? OR projects.description LIKE ? OR users.name LIKE ?)";
     $params[] = "%$search%";
     $params[] = "%$search%";
-    $types .= 'ss';
+    $params[] = "%$search%";
+    $types .= 'sss';
 }
 if (!empty($department)) {
     $conditions .= " AND projects.college = ?";
@@ -50,8 +42,9 @@ if (!empty($faculty)) {
     $types .= 's';
 }
 
-// Count total matching projects
-$countStmt = mysqli_prepare($conn, "SELECT COUNT(*) $baseQuery $conditions");
+// Count total
+$countQuery = "SELECT COUNT(*) FROM projects JOIN users ON projects.faculty_mentor_id = users.id $conditions";
+$countStmt = mysqli_prepare($conn, $countQuery);
 if (!empty($params)) {
     mysqli_stmt_bind_param($countStmt, $types, ...$params);
 }
@@ -59,10 +52,9 @@ mysqli_stmt_execute($countStmt);
 mysqli_stmt_bind_result($countStmt, $totalProjects);
 mysqli_stmt_fetch($countStmt);
 mysqli_stmt_close($countStmt);
+$totalPages = max(1, ceil($totalProjects / $limit));
 
-$totalPages = ceil($totalProjects / $projectsPerPage);
-
-// Final query with LIMIT and OFFSET
+// Final paginated query
 $query = "
     SELECT 
         projects.id, 
@@ -71,19 +63,17 @@ $query = "
         projects.college, 
         users.name AS mentor_name, 
         users.title AS mentor_title 
-    $baseQuery 
-    $conditions 
+    FROM projects 
+    JOIN users ON projects.faculty_mentor_id = users.id
+    $conditions
     LIMIT ? OFFSET ?
 ";
-
-$params[] = $projectsPerPage;
+$params[] = $limit;
 $params[] = $offset;
 $types .= 'ii';
 
 $stmt = mysqli_prepare($conn, $query);
-if (!empty($params)) {
-    mysqli_stmt_bind_param($stmt, $types, ...$params);
-}
+mysqli_stmt_bind_param($stmt, $types, ...$params);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 ?>
@@ -95,17 +85,18 @@ $result = mysqli_stmt_get_result($stmt);
     <div class="row justify-content-center mb-4">
         <div class="col-md-10">
             <form method="GET" action="projects.php">
-
                 <div class="input-group mb-2">
-                    <input class="form-control" type="search" name="search" placeholder="Search Projects..." value="<?= htmlspecialchars($search) ?>">
+                    <input type="text" class="form-control form-control-lg" name="search"
+                        value="<?= htmlspecialchars($search) ?>"
+                        placeholder="Search projects by title, description, or faculty..." aria-label="Search">
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-md-4 mb-2 mb-md-0">
+                    <div class="col-md-6 mb-2 mb-md-0">
                         <select class="form-control" name="department">
-                            <option value="">Department</option>
-                            <?php while ($row = mysqli_fetch_assoc($collegeResult)): ?>
-                                <option value="<?= htmlspecialchars($row['college']) ?>" <?= ($department === $row['college']) ? 'selected' : '' ?>>
+                            <option value="">All Departments</option>
+                            <?php while ($row = mysqli_fetch_assoc($departmentResult)): ?>
+                                <option value="<?= htmlspecialchars($row['college']) ?>" <?= $department === $row['college'] ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($row['college']) ?>
                                 </option>
                             <?php endwhile; ?>
@@ -123,7 +114,8 @@ $result = mysqli_stmt_get_result($stmt);
                         </select>
                     </div>
                 </div>
-                <div class="text-center">
+
+                <div class="text-center mt-2">
                     <button class="btn btn-secondary px-4 py-2" type="submit">Search Projects</button>
                 </div>
             </form>
@@ -131,7 +123,7 @@ $result = mysqli_stmt_get_result($stmt);
         </div>
     </div>
 
-    <!-- Project Listings  -->
+    <!-- Project Listings -->
     <div class="row">
         <?php
         if (mysqli_num_rows($result) > 0) {
@@ -141,8 +133,11 @@ $result = mysqli_stmt_get_result($stmt);
                     <div class="card glass h-100 project-card">
                         <div class="card-content">
                             <h4 class="card-title mb-3"><?= htmlspecialchars($project['title']) ?></h4>
-                            <p class="card-text mb-3"><?= substr(htmlspecialchars($project['description']), 0, 100) . (strlen($project['description']) > 100 ? '...' : '') ?></p>
-                            <div class="d-flex justify-content-between mb-3">
+                            <p class="card-text mb-3">
+                                <?= substr(htmlspecialchars($project['description']), 0, 100) ?>
+                                <?= strlen($project['description']) > 100 ? '...' : '' ?>
+                            </p>
+                            <div class="d-flex justify-content-between mb-2">
                                 <span><strong>Faculty:</strong> <?= htmlspecialchars($project['mentor_title'] . ' ' . $project['mentor_name']) ?></span>
                             </div>
                             <p class="mb-3"><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></p>
@@ -159,31 +154,37 @@ $result = mysqli_stmt_get_result($stmt);
     </div>
 
     <!-- Pagination -->
-    <nav aria-label="Project pagination">
-        <div class="pagination-container mt-4">
-            <ul class="pagination justify-content-center">
-                <?php if ($page > 1): ?>
-                    <li class="pagination-item"><a class="pagination-link pagination-prev" href="<?= buildPageUrl($page - 1) ?>">Previous</a></li>
-                <?php endif; ?>
+ <!-- Pagination -->
+<div class="pagination-container mt-4">
+    <ul class="pagination justify-content-center">
+        <!-- Previous Link -->
+        <?php if ($page > 1): ?>
+            <li class="pagination-item">
+                <a href="<?= buildPageUrl($page - 1) ?>" class="pagination-link pagination-prev">Previous</a>
+            </li>
+        <?php endif; ?>
 
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <li class="pagination-item <?= ($i === $page) ? 'active' : '' ?>">
-                        <a class="pagination-link" href="<?= buildPageUrl($i) ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
+        <!-- Page Numbers -->
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="pagination-item">
+                <a href="<?= buildPageUrl($i) ?>" class="pagination-link <?= ($i === $page) ? 'active' : '' ?>">
+                    <?= $i ?>
+                </a>
+            </li>
+        <?php endfor; ?>
 
-                <?php if ($page < $totalPages): ?>
-                    <li class="pagination-item"><a class="pagination-link pagination-next" href="<?= buildPageUrl($page + 1) ?>">Next</a></li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    </nav>
+        <!-- Next Link -->
+        <?php if ($page < $totalPages): ?>
+            <li class="pagination-item">
+                <a href="<?= buildPageUrl($page + 1) ?>" class="pagination-link pagination-next">Next</a>
+            </li>
+        <?php endif; ?>
+    </ul>
 </div>
 
 <?php
-// Helper to preserve filter parameters during pagination
-function buildPageUrl($page)
-{
+// Preserves query parameters in pagination links
+function buildPageUrl($page) {
     $query = $_GET;
     $query['page'] = $page;
     return '?' . http_build_query($query);
