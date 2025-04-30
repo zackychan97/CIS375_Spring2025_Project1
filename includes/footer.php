@@ -1,11 +1,15 @@
 
-	<footer class="footer bg-light text-center mt-5 p-3">
+	<footer class="footer">
 		<div class="container">
-			<span>CollaboraNation &copy; <?php echo date('Y'); ?> | <a href="about.php">About</a> | <a href="privacy.php">Privacy Policy</a> | <a href="contact.php">Contact</a></span>
+			<div class="footer-content">
+				<p class="copyright-notice">&copy; <?php echo date('Y'); ?> CollaboraNation. All rights reserved.</p>
+				<div class="footer-links">
+					<a href="about.php" class="footer-link">About</a>
+					<a href="privacy.php" class="footer-link">Privacy Policy</a>
+					<a href="contact.php" class="footer-link">Contact</a>
+				</div>
+			</div>
 		</div>
 	</footer>
-	<!-- Optional: include jQuery and Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 	</body>
 </html>

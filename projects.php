@@ -88,76 +88,104 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 ?>
 
-<div class="container mt-4">
-    <h2>Project Listings</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Discover Research Projects</h2>
+  
+    <!-- Search and Filters -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10">
+            <form method="GET" action="projects.php">
 
-    <!-- Search & Filter Form -->
-    <form class="form-inline mb-4" method="GET" action="projects.php">
-        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search Projects..." value="<?= htmlspecialchars($search) ?>">
-
-        <select class="form-control mr-sm-2" name="department">
-            <option value="">Department</option>
-            <?php while ($row = mysqli_fetch_assoc($collegeResult)): ?>
-                <option value="<?= htmlspecialchars($row['college']) ?>" <?= ($department === $row['college']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($row['college']) ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
-
-        <select class="form-control mr-sm-2" name="faculty">
-            <option value="">Faculty</option>
-            <?php while ($row = mysqli_fetch_assoc($facultyResult)): ?>
-                <option value="<?= htmlspecialchars($row['name']) ?>" <?= ($faculty === $row['name']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($row['name']) ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
-
-        <button class="btn btn-outline-success my-2" type="submit">Search</button>
-    </form>
-
-    <!-- Project Listings -->
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control form-control-lg" name="search" placeholder="Search projects by title, description, or faculty..." aria-label="Search">
+                </div>
+                
+                <div class="row mb-2">
+                    <div class="col-md-4 mb-2 mb-md-0">
+                        <select class="form-control" id="department" name="department">
+                            <option value="">All Departments</option>
+                            <option value="College of Business & Information Systems">College of Business & Information Systems</option>
+                            <option value="The Beacom College of Computer & Cyber Sciences">The Beacom College of Computer & Cyber Sciences</option>
+                            <option value="College of Arts & Sciences">College of Arts & Sciences</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-4 mb-2 mb-md-0">
+                        <select class="form-control" id="faculty" name="faculty">
+                            <option value="">All Faculty</option>
+                            <option value="Dr. Mohammad Tafiqur Rahman">Dr. Mohammad Tafiqur Rahman</option>
+                            <option value="Michael Ham">Michael Ham</option>
+                            <option value="Gillian Morris">Gillian Morris</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <select class="form-control" id="project_type" name="project_type">
+                            <option value="">All Project Types</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Health">Health</option>
+                            <option value="Business">Business</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button class="btn btn-secondary px-4 py-2" type="submit">Search Projects</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  
+    <!-- Project Listings  -->
     <div class="row">
-        <?php if (mysqli_num_rows($result) > 0): ?>
-            <?php while ($project = mysqli_fetch_assoc($result)): ?>
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img src="assets/placeholder.jpg" class="card-img-top" alt="Project Image">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($project['title']) ?></h5>
-                            <p class="card-text"><?= htmlspecialchars(substr($project['description'], 0, 150)) ?>...</p>
-                            <p><strong>Faculty:</strong> <?= htmlspecialchars($project['mentor_name']) ?></p>
-                            <p><strong>Department:</strong> <?= htmlspecialchars($project['college']) ?></p>
-                            <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-primary">View Details</a>
+        <?php
+        if (mysqli_num_rows($result) > 0) {
+            while ($project = mysqli_fetch_assoc($result)) {
+                ?>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card glass h-100 project-card">
+                        <div class="card-content">
+                            <h4 class="card-title mb-3"><?= htmlspecialchars($project['title']) ?></h4>
+                            <p class="card-text mb-3"><?= substr(htmlspecialchars($project['description']), 0, 100) . (strlen($project['description']) > 100 ? '...' : '') ?></p>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span><strong>Faculty:</strong> <?= htmlspecialchars($project['mentor_title'] . ' ' . $project['mentor_name']) ?></span>
+                            </div>
+                            <p class="mb-3"><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></p>
+                            <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-secondary w-100">View Details</a>
                         </div>
                     </div>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <div class="col-12">
-                <p class="text-muted">No projects match your search criteria.</p>
-            </div>
-        <?php endif; ?>
+                <?php
+            }
+        } else {
+            echo '<div class="col-12 text-center"><p>No projects found. Try adjusting your search criteria.</p></div>';
+        }
+        ?>
     </div>
-
+  
     <!-- Pagination -->
-    <nav aria-label="Project pagination">
-        <ul class="pagination justify-content-center">
-            <?php if ($page > 1): ?>
-                <li class="page-item"><a class="page-link" href="<?= buildPageUrl($page - 1) ?>">Previous</a></li>
-            <?php endif; ?>
-
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <li class="page-item <?= ($i === $page) ? 'active' : '' ?>">
-                    <a class="page-link" href="<?= buildPageUrl($i) ?>"><?= $i ?></a>
-                </li>
-            <?php endfor; ?>
-
-            <?php if ($page < $totalPages): ?>
-                <li class="page-item"><a class="page-link" href="<?= buildPageUrl($page + 1) ?>">Next</a></li>
-            <?php endif; ?>
+    <div class="pagination-container mt-4">
+        <ul class="pagination">
+            <li class="pagination-item">
+                <a href="#" class="pagination-link pagination-prev">Previous</a>
+            </li>
+            <li class="pagination-item">
+                <a href="#" class="pagination-link active">1</a>
+            </li>
+            <li class="pagination-item">
+                <a href="#" class="pagination-link">2</a>
+            </li>
+            <li class="pagination-item">
+                <a href="#" class="pagination-link">3</a>
+            </li>
+            <li class="pagination-item">
+                <a href="#" class="pagination-link">4</a>
+            </li>
+            <li class="pagination-item">
+                <a href="#" class="pagination-link pagination-next">Next</a>
+            </li>
         </ul>
-    </nav>
+    </div>
 </div>
 
 <?php

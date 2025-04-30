@@ -8,8 +8,9 @@ if (session_status() === PHP_SESSION_NONE) {
 if(function_exists('flashMessage')) {
     // Do nothing, function already exists
 } else {
-    function flashMessage($message) {
+    function flashMessage($message, $type = 'success') {
         $_SESSION['flash_message'] = $message;
+        $_SESSION['flash_type'] = $type;
     }
 }
 
@@ -18,8 +19,20 @@ if(function_exists('displayFlash')) {
 } else {
     function displayFlash() {
         if (isset($_SESSION['flash_message'])) {
-            echo "<div class='alert alert-success'>".$_SESSION['flash_message']."</div>";
+            $type = isset($_SESSION['flash_type']) ? $_SESSION['flash_type'] : 'success';
+            $alertClass = 'alert glass';
+            
+            if ($type == 'error') {
+                $alertClass .= ' bg-danger';
+            } else if ($type == 'warning') {
+                $alertClass .= ' bg-warning';
+            } else {
+                $alertClass .= ' bg-success';
+            }
+            
+            echo "<div class='container mt-3'><div class='$alertClass' style='padding: 15px; border-radius: 10px;'>".$_SESSION['flash_message']."</div></div>";
             unset($_SESSION['flash_message']);
+            unset($_SESSION['flash_type']);
         }
     }
 }
