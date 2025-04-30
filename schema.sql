@@ -6,14 +6,16 @@ USE collab_db;
 
 
 --CREATE USERS TABLE
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(10), 
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('student', 'professor', 'admin') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    role ENUM('Student', 'Professor', 'Admin') NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
 
 --TO CREATE ADMIN USER REGISTER AS A USER THEN CHANGE ROLE IN THE CONSOLE
 
@@ -31,10 +33,11 @@ CREATE TABLE contact_messages (
 CREATE TABLE projects (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
-    description TEXT,
-    created_by INT NOT NULL,  -- references users(id)
+    description TEXT NOT NULL,
+    college VARCHAR(255),                  
+    faculty_mentor_id INT NOT NULL,        
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id)
+    FOREIGN KEY (faculty_mentor_id) REFERENCES users(id) ON DELETE CASCADE,
 );
 
 -- CREATE PROJECT_MEMBERS TABLE
@@ -55,8 +58,22 @@ CREATE TABLE comments (
     user_id INT NOT NULL,
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    
+);
+
+
+
+-- CREATE COMMENTS TABLE
+CREATE TABLE project_comments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id INT NOT NULL,
+    user_id INT NOT NULL,
+    comment TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- CREATE CONTRIBUTIONS TABLE
@@ -73,13 +90,13 @@ CREATE TABLE contributions (
 -- CREATE UPLOADS TABLE
 CREATE TABLE uploads (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,           -- who uploaded it
-    project_id INT,                 -- optional: if tied to a project
-    contribution_id INT,            -- optional: if tied to a contribution
-    file_name VARCHAR(255) NOT NULL, -- original file name (like "design_doc.pdf")
-    file_type VARCHAR(100) NOT NULL, -- MIME type (like "application/pdf" or "image/jpeg")
-    file_size INT,                  -- in bytes
-    file_data LONGBLOB NOT NULL,     -- the raw binary file data
+    user_id INT NOT NULL,      
+    project_id INT,                
+    contribution_id INT,            
+    file_name VARCHAR(255) NOT NULL, 
+    file_type VARCHAR(100) NOT NULL, 
+    file_size INT,                
+    file_data LONGBLOB NOT NULL,   
     uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (project_id) REFERENCES projects(id),
