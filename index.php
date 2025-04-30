@@ -40,10 +40,6 @@ $featuredProjects = mysqli_fetch_all($featuredResult, MYSQLI_ASSOC);
         </div>
     </section>
 
-    </div>
-    </div>
-    
-
     
 <!-- Featured Projects -->
 <section class="mb-5">
