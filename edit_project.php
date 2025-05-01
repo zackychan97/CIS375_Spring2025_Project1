@@ -2,10 +2,11 @@
 include "includes/header.php"; 
 require_once 'includes/db.php'; 
 require_once 'includes/auth.php'; 
-requireAdmin(); 
+// requireAdmin(); 
 
 // CAPTURE PROJECT ID FROM URL
 $project_id = $_GET['id'] ?? null;
+requireAdminOrOwner($conn, $project_id);
 
 // QUERY TO FETCH PROJECT DETAILS BASED ON ID FROM URL
 $query = "SELECT title, description, college, faculty_mentor_id FROM projects WHERE id = ?";

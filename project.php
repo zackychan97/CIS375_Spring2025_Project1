@@ -2,11 +2,11 @@
 include "includes/header.php";
 include "includes/auth.php";
 include "includes/project_functions.php";
-include "includes/comments.php"; // Include comments functionality
-// requireLogin();
+include "includes/comments.php"; 
+requireLogin();
 require_once 'includes/db.php';
 
-// Process comment submission
+
 
 $project_id = $_GET['id'] ?? null;
 $user_id = $_SESSION['user_id'] ?? null;
@@ -117,7 +117,7 @@ mysqli_data_seek($teamResult, 0);
                         <?php elseif (!$isRegistered): ?>
 
                             <form method="POST">
-                                <input type="hidden" name="project_id" value="<?= $projectId ?>">
+                                <input type="hidden" name="project_id" value="<?= $project_id ?>">
                                 <button type="submit" name="join_project" class="btn btn-secondary">Join Project</button>
                             </form>
                         <?php endif; ?>
@@ -141,7 +141,10 @@ mysqli_data_seek($teamResult, 0);
 
                 <?php if ($isLoggedIn && $isOwner): ?>
                     <div class="project-actions mt-4">
-                        <a href="edit_project.php?id=<?= $project['id'] ?>" class="btn btn-secondary">Edit Project</a>
+                    
+                    <form method="POST" action="edit_project.php?id=<?= $project_id ?>" class="d-inline ms-2" >
+                            <button type="submit" name="update_project" class="btn btn-outline">Update Project</button>
+                        </form>
                         <form method="POST" action="owner_delete_prj.php?id=<?= $project['id'] ?>" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to delete this project?');">
                             <button type="submit" name="delete_project" class="btn btn-outline">Delete Project</button>
                         </form>

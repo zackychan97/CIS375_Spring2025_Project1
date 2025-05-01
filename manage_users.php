@@ -15,13 +15,12 @@ $result = mysqli_query($conn, $query);
 
 <div class="container mt-5">
     <div class="row">
-        <!-- SIDEBAR.PHP -->
-        <?php include "includes/sidebar.php"; ?>
+        
 
         <!-- Main Content -->
         <div class="col-md-9">
             <h2>Manage Users</h2>
-            <a href="add_user.php" class="btn btn-success mb-3">Add New User</a>
+            <a href="add_user.php" class="btn btn-outline mb-3">Add New User</a>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -35,10 +34,8 @@ $result = mysqli_query($conn, $query);
                         echo "<td>" . htmlspecialchars($user['name']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['email']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['role']) . "</td>";
-                        // CAN SOMEONE FIGURE OUT SPACING THESE BUTTONS OUT?
-                        // I TRIED USING ME-1, BUT IT DIDN'T WORK
-                        echo "<td><a href='edit_user.php?id=" . $user['id'] . "' class='btn btn-sm btn-primary me-1 '>Edit</a>";
-                        echo "<a href='delete_user.php?id=" . $user['id'] . "' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>";                        
+                        echo "<td><a href='edit_user.php?id=" . $user['id'] . "'class='btn btn-outline'>Edit</a>";
+                        echo "<a href='delete_user.php?id=" . $user['id'] . "'class='btn btn-outline' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>";                        
                         echo "</tr>";
                     }
                     ?>
