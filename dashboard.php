@@ -32,8 +32,8 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <!-- Header and Action Buttons -->
         <div class="row welcome-section">
             <div class="col-md-8">
-                <h2 class="mb-3">Welcome, <?= htmlspecialchars($fullname) ?></h2>
-                <p class="text-muted"><?= htmlspecialchars($role) ?></p>
+                <h2 class="mb-3">Welcome, <?= htmlspecialchars($fullname) ?>!</h2>
+                <p class="text-muted">Role: <?= htmlspecialchars($role) ?></p>
             </div>
             <div class="col-md-4 text-md-end mt-4 mt-md-0">
                 <a href="edit_profile.php" class="btn btn-secondary me-2 px-2 py-1">Edit Profile</a>
@@ -54,19 +54,16 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
             <div class="row px-4">
                 <?php foreach ($projects as $project): ?>
                     <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card glass project-card h-100">
+                        <a href="project.php?id=<?= $project['id'] ?>" class="dashboard-project-card">
                             <div class="card-content">
                                 <h4 class="card-title mb-3"><?= htmlspecialchars($project['title']) ?></h4>
                                 <p class="card-text mb-4"><?= htmlspecialchars(substr($project['description'], 0, 100)) . (strlen($project['description']) > 100 ? '...' : '') ?></p>
-                                <div class="mt-3">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <span><strong>Role:</strong> <?= htmlspecialchars($project['role']) ?></span>
-                                        <span><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></span>
-                                    </div>
-                                    <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-secondary w-100 py-2">View Details</a>
+                                <div class="project-meta">
+                                    <span><strong>Role:</strong> <?= htmlspecialchars($project['role']) ?></span>
+                                    <span><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -74,7 +71,7 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
         
         <?php if ($role === 'Admin' || $role === 'Professor'): ?>
             <div class="text-center mt-4 pb-3">
-                <a href="add_project.php" class="btn btn-primary px-4 py-2">Create New Project</a>
+                <a href="add_project.php" class="btn btn-outline mb-4 px-4 py-2">Create New Project</a>
             </div>
         <?php endif; ?>
     </div>
