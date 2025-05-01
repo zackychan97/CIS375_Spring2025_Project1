@@ -4,9 +4,6 @@ include "includes/db.php";
 require_once 'includes/auth.php'; 
 require_once 'includes/project_functions.php';
 
-requireAdmin(); 
-
-
 
 
 // CAPTURE FORM DATA
@@ -15,6 +12,8 @@ $title = $_POST['title'] ?? '';
 $description = $_POST['description'] ?? '';
 $college = $_POST['college'] ?? '';
 $faculty_email = $_POST['faculty_email'] ?? '';
+
+requireAdminOrOwner($conn, $project_id);
 
 // CHECK IF THE PROJECT ID IS VALID
 if ($project_id !== null) {

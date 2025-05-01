@@ -26,9 +26,9 @@ if ($owner !== $user_id) {
 }
 
 // DELETE PROJECT FROM DATABASE
-$deleteQuery = "DELETE FROM projects WHERE id = ?";
+$deleteQuery = "DELETE FROM projects WHERE id = ? AND faculty_mentor_id = ? LIMIT 1";
 $deleteStmt = mysqli_prepare($conn, $deleteQuery);
-mysqli_stmt_bind_param($deleteStmt, "i", $project_id);
+mysqli_stmt_bind_param($deleteStmt, "ii", $project_id, $user_id);
 mysqli_stmt_execute($deleteStmt);
 mysqli_stmt_close($deleteStmt);
 

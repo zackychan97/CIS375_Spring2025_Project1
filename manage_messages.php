@@ -15,8 +15,7 @@ $result = mysqli_query($conn, $query);
 
 <div class="container mt-5">
     <div class="row">
-        <!-- SIDEBAR.PHP -->
-        <?php include "includes/sidebar.php"; ?>
+        
 
         <!-- Main Content -->
         <div class="col-md-9">

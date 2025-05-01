@@ -33,7 +33,7 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <div class="row welcome-section">
             <div class="col-md-8">
                 <h2 class="mb-3">Welcome, <?= htmlspecialchars($fullname) ?></h2>
-                <p class="text-muted"><?= htmlspecialchars($role) ?></p>
+                <p class="text-muted"><?= ucfirst(htmlspecialchars($role)) ?></p>
             </div>
             <div class="col-md-4 text-md-end mt-4 mt-md-0">
                 <a href="edit_profile.php" class="btn btn-secondary me-2 px-2 py-1">Edit Profile</a>
@@ -44,6 +44,7 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
         
         <!-- Projects -->
         <h3 class="section-heading">My Projects</h3>
+        
         
         <?php if (empty($projects)): ?>
             <div class="text-center p-5">
@@ -72,11 +73,27 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </div>
         <?php endif; ?>
         
-        <?php if ($role === 'Admin' || $role === 'Professor'): ?>
+        <?php if ($role === 'admin' || $role === 'professor'): ?>
             <div class="text-center mt-4 pb-3">
                 <a href="add_project.php" class="btn btn-primary px-4 py-2">Create New Project</a>
             </div>
         <?php endif; ?>
+        <?php if ($role === 'admin'): ?>
+  <div class="text-center mt-3 pb-3">
+    <a href="manage_users.php"
+       class="btn btn-primary me-2 px-4 py-2">
+      Admin: Manage Users
+    </a>
+    <a href="manage_projects.php"
+       class="btn btn-primary me-2 px-4 py-2">
+      Admin: Manage Projects
+    </a>
+    <a href="manage_messages.php"
+       class="btn btn-primary px-4 py-2">
+      Admin: Manage Messages
+    </a>
+  </div>
+<?php endif; ?>
     </div>
 </div>
 
