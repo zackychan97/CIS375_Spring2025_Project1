@@ -34,7 +34,7 @@ $result = mysqli_query($conn, $query);
                         echo "<td>" . htmlspecialchars($message['email']) . "</td>";
                         echo "<td>" . htmlspecialchars($message['subject']) . "</td>";
                         echo "<td>" . htmlspecialchars($message['message']) . "</td>";            
-                        echo "<td><a href='delete_message.php?id=" . $message['id'] . "' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this contact message?\")'>Delete</a></td>";                        
+                        echo "<td><a href='delete_message.php?id=" . $message['id'] . "' class='btn btn-sm btn-outline' onclick='return confirm(\"Are you sure you want to delete this contact message?\")'>Delete</a></td>";                        
                         echo "</tr>";
                     }
                     ?>
