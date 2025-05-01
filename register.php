@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-secondary">Register</button>
             </div>
         </form>
         <p class="text-center mt-3">Already have an account? <a href="login.php">Login here</a>.</p>

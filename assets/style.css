@@ -79,6 +79,28 @@ body::after {
   border: 1px solid var(--glass-border);
   border-radius: 15px;
   box-shadow: 0 8px 32px 0 var(--glass-shadow);
+  transition: var(--transition);
+}
+
+.glass:hover {
+  border-color: var(--secondary-color);
+  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Exception for navbar and other fixed elements that shouldn't have hover effects */
+.navbar.glass:hover,
+.alert.glass:hover,
+.pagination-link.glass:hover {
+  border-color: var(--glass-border);
+  box-shadow: 0 8px 32px 0 var(--glass-shadow);
+}
+
+/* Clickable glass elements should have a transform effect too */
+a.glass:hover,
+.card.glass:hover,
+.project-card.glass:hover,
+.form-container.glass:hover {
+  transform: translateY(-5px);
 }
 
 /* Typography */
@@ -994,5 +1016,170 @@ select option {
   color: #000000;
 }
 
+/* Featured Projects */
+.featured-projects-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  margin: 0 auto;
+  max-width: 1100px;
+}
 
+.featured-project-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px 0 var(--glass-shadow);
+  overflow: hidden;
+  transition: var(--transition);
+  height: 100%;
+  display: block;
+  text-decoration: none;
+}
 
+.featured-project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.15);
+  border-color: var(--secondary-color);
+}
+
+.featured-project-content {
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-project-title {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: var(--light-color);
+  position: relative;
+  display: inline-block;
+}
+
+.featured-project-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--secondary-color);
+  transition: var(--transition);
+}
+
+.featured-project-card:hover .featured-project-title::after {
+  width: 100%;
+}
+
+.featured-project-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--light-color);
+  opacity: 0.9;
+}
+
+.featured-empty-state {
+  text-align: center;
+  padding: 60px 30px;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  border: 1px solid var(--glass-border);
+}
+
+.featured-empty-state p {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  opacity: 0.8;
+}
+
+.btn-sm {
+  padding: 6px 15px;
+  font-size: 0.9rem;
+}
+
+/* Media queries for featured projects */
+@media (min-width: 768px) {
+  .featured-projects-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .featured-projects-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Dashboard Project Cards */
+.dashboard-project-card {
+  position: relative;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px 0 var(--glass-shadow);
+  overflow: hidden;
+  transition: var(--transition);
+  height: 100%;
+  display: block;
+  text-decoration: none;
+  padding: 2px;
+}
+
+.dashboard-project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.15);
+  border-color: var(--secondary-color);
+}
+
+.dashboard-project-card .card-content {
+  padding: 25px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-project-card .card-title {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: var(--light-color);
+  position: relative;
+  display: inline-block;
+}
+
+.dashboard-project-card .card-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--secondary-color);
+  transition: var(--transition);
+}
+
+.dashboard-project-card:hover .card-title::after {
+  width: 100%;
+}
+
+.dashboard-project-card .card-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--light-color);
+  opacity: 0.9;
+  flex-grow: 1;
+}
+
+.dashboard-project-card .project-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: var(--light-color);
+  opacity: 0.8;
+}
