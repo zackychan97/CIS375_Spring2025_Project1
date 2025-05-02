@@ -41,8 +41,6 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <a href="manage_projects.php" class="btn btn-secondary me-2 px-2 py-1">Admin: Manage Projects</a>
                 <a href="manage_messages.php" class="btn btn-secondary me-2 px-2 py-1">Admin: Manage Messages</a>
 
-                <h2 class="mb-3">Welcome, <?= htmlspecialchars($fullname) ?>!</h2>
-                <p class="text-muted">Role: <?= htmlspecialchars($role) ?></p>
 
             </div>
             <div class="col-md-4 text-md-end mt-4 mt-md-0">
@@ -70,7 +68,7 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
                                 <h4 class="card-title mb-3"><?= htmlspecialchars($project['title']) ?></h4>
                                 <p class="card-text mb-4"><?= htmlspecialchars(substr($project['description'], 0, 100)) . (strlen($project['description']) > 100 ? '...' : '') ?></p>
                                 <div class="project-meta">
-                                    <span><strong>Role:</strong> <?= htmlspecialchars($project['role']) ?></span>
+                                    <span><strong>Role:</strong> <?= ucfirst(htmlspecialchars($project['role'])) ?></span>
                                     <span><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></span>
                                 </div>
                             </div>
