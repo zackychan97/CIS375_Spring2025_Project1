@@ -13,7 +13,7 @@
 				<input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
 			</div>
 			<div class="text-center mt-4">
-				<button type="submit" class="btn btn-primary">Login</button>
+				<button type="submit" class="btn btn-secondary">Login</button>
 			</div>
 		</form>
 		<p class="text-center mt-3">Don't have an account? <a href="register.php">Register here</a>.</p>

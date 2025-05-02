@@ -43,7 +43,7 @@ include "includes/header.php";
             <input type="email" class="form-control" name="faculty_email" id="faculty_email" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Project</button>
+        <button type="submit" class="btn btn-secondary">Add Project</button>
     </form>
 </div>
 
