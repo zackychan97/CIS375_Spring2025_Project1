@@ -6,11 +6,21 @@ include "includes/header.php";
     <h2>Add New Project</h2>
 
     <!-- BASIC FORM FOR PROJECT ADD -->
-    <form action="add_project_process.php" method="POST">
+    <form action="add_project_process.php" method="POST" enctype="multipart/form-data">
         <div class="form-group mb-3">
             <label for="title">Project Title</label>
             <input type="text" class="form-control" name="title" id="title" required>
         </div>
+
+        <div class="form-group mb-3">
+  <label for="thumbnail">Thumbnail Image</label>
+  <input type="file" class="form-control" name="thumbnail" id="thumbnail" accept="image/*">
+  <?php if (!empty($project['thumbnail'])): ?>
+    <small class="text-light">
+      Current: <?= htmlspecialchars($project['thumbnail']) ?>
+    </small>
+  <?php endif; ?>
+</div>
 
         <div class="form-group mb-3">
             <label for="description">Description</label>

@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // CHECK IF ALL FIELDS ARE FILLED
     if (empty($title) || empty($description) || empty($college) || empty($faculty_email)) {
-        echo "All fields are required.";
+        flashMessage('All fields are required.', 'error');
+
     } else {
         // QUERY EMAIL TO FIND FACULTY ID
         $userQuery = "SELECT id FROM users WHERE email = ?";
@@ -51,6 +52,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($success) {
             // GET THE LAST INSERTED PROJECT ID
             $project_id = mysqli_insert_id($conn);
+
+         
+if (
+    isset($_FILES['thumbnail']) && is_uploaded_file($_FILES['thumbnail']['tmp_name'])
+) {
+
+    $ext   = strtolower(pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION));
+    $fname = 'thumb.' . $ext;
+
+    $uploadDir = __DIR__ . '/public/uploads/projects/' . $project_id;
+    if (! is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    $target = $uploadDir . '/' . $fname;
+    if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $target)) {
+        $relPath = "projects/{$project_id}/{$fname}";
+        $updStmt = mysqli_prepare(
+          $conn,
+          "UPDATE projects
+             SET thumbnail = ?
+           WHERE id = ?"
+        );
+        mysqli_stmt_bind_param($updStmt, 'si', $relPath, $project_id);
+        mysqli_stmt_execute($updStmt);
+        mysqli_stmt_close($updStmt);
+
+    } else {
+        flashMessage('Thumbnail upload failed.', 'warning');
+    }
+}
+
+
 
             // INSERT THE FACULTY MEMBER AS THE OWNER OF THE PROJECT
             $memberQuery = "INSERT INTO project_members (project_id, user_id, role) 

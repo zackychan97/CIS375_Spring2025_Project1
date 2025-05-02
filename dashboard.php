@@ -84,13 +84,7 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </div>
         <?php endif; ?>
         <?php if ($role === 'admin'): ?>
-  <div class="text-center mt-3 pb-3">
-    <a href="manage_users.php"
-       class="btn btn-primary me-2 px-4 py-2">
-      Admin: Manage Users
-    </a>
-        
-  </div>
+  
 <?php endif; ?>
     </div>
 </div>
