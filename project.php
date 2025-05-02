@@ -3,7 +3,7 @@ include "includes/header.php";
 include "includes/auth.php";
 include "includes/project_functions.php";
 include "includes/comments.php"; 
-requireLogin();
+// requireLogin();
 require_once 'includes/db.php';
 
 
@@ -127,7 +127,7 @@ mysqli_data_seek($teamResult, 0);
                 <div class="project-meta mt-3">
                     <span><strong>Faculty:</strong> <?= htmlspecialchars(trim($project['mentor_title'] . " " . $project['mentor_name'])) ?></span>
                     <span><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></span>
-                    <span><strong>Timeline:</strong> Jan 2025 - Dec 2025</span>
+                    <!-- <span><strong>Timeline:</strong> Jan 2025 - Dec 2025</span> -->
                 </div>
             </div>
         </div>

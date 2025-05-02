@@ -27,6 +27,7 @@ mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $subject, $message);
 
 if (mysqli_stmt_execute($stmt)) {
     header("Location: contact.php");
+    flashMessage("Comment submitted successfully!", "success");
     exit();
 } else {
     flashMessage("Failed to send message: " . mysqli_error($conn), "error");
