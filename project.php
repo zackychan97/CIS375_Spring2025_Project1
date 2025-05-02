@@ -146,7 +146,7 @@ mysqli_data_seek($teamResult, 0);
                             <button type="submit" name="update_project" class="btn btn-outline">Update Project</button>
                         </form>
                         <form method="POST" action="owner_delete_prj.php?id=<?= $project['id'] ?>" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                            <button type="submit" name="delete_project" class="btn btn-outline">Delete Project</button>
+                            <button type="submit" name="delete_project" class="btn btn-danger">Delete Project</button>
                         </form>
                     </div>
                 <?php endif; ?>
