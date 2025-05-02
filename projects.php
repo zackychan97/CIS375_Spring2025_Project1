@@ -1,6 +1,21 @@
 <?php
 include "includes/header.php";
 require_once 'includes/db.php';
+require_once 'includes/project_functions.php';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Capture filters
 $search = $_GET['search'] ?? '';
@@ -78,6 +93,9 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 ?>
 
+
+
+
 <div class="container mt-5">
     <h2 class="text-center mb-4">Discover Research Projects</h2>
 
@@ -125,33 +143,63 @@ $result = mysqli_stmt_get_result($stmt);
 
     <!-- Project Listings -->
     <div class="row">
-        <?php
-        if (mysqli_num_rows($result) > 0) {
-            while ($project = mysqli_fetch_assoc($result)) {
-        ?>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card glass h-100 project-card">
-                        <div class="card-content">
-                            <h4 class="card-title mb-3"><?= htmlspecialchars($project['title']) ?></h4>
-                            <p class="card-text mb-3">
-                                <?= substr(htmlspecialchars($project['description']), 0, 100) ?>
-                                <?= strlen($project['description']) > 100 ? '...' : '' ?>
-                            </p>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span><strong>Faculty:</strong> <?= htmlspecialchars($project['mentor_title'] . ' ' . $project['mentor_name']) ?></span>
-                            </div>
-                            <p class="mb-3"><strong>College:</strong> <?= htmlspecialchars($project['college']) ?></p>
-                            <a href="project.php?id=<?= $project['id'] ?>" class="btn btn-secondary w-100">View Details</a>
-                        </div>
-                    </div>
+    <?php
+    if (mysqli_num_rows($result) > 0) {
+        while ($project = mysqli_fetch_assoc($result)) {
+
+           
+            
+            
+            //STOP DEBUG
+            // grab up to one thumb (you can expand to more)
+            $thumbURL = getProjectThumbnail((int)$project['id']);
+    ?>
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card glass h-100 project-card d-flex flex-row">
+            
+            <!-- LEFT: Thumbnail Column -->
+            <div class="project-thumb flex-shrink-0">
+                <img 
+                  src="<?= htmlspecialchars($thumbURL) ?>" 
+                  alt="Thumbnail for <?= htmlspecialchars($project['title']) ?>"
+                  class="thumb-img"
+                >
+            </div>
+            
+            <!-- RIGHT: Card Content -->
+            <div class="card-content flex-grow-1 p-3">
+                <h4 class="card-title mb-2">
+                  <?= htmlspecialchars($project['title']) ?>
+                </h4>
+                <p class="card-text mb-3">
+                  <?= substr(htmlspecialchars($project['description']), 0, 100) ?>
+                  <?= strlen($project['description']) > 100 ? '...' : '' ?>
+                </p>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>
+                      <strong>Faculty:</strong> 
+                      <?= htmlspecialchars($project['mentor_title'] . ' ' . $project['mentor_name']) ?>
+                    </span>
                 </div>
-        <?php
-            }
-        } else {
-            echo '<div class="col-12 text-center"><p>No projects found. Try adjusting your search criteria.</p></div>';
-        }
-        ?>
+                <p class="mb-3">
+                  <strong>College:</strong> <?= htmlspecialchars($project['college']) ?>
+                </p>
+                <a 
+                  href="project.php?id=<?= $project['id'] ?>" 
+                  class="btn btn-secondary w-100"
+                >
+                  View Details
+                </a>
+            </div>
+        </div>
     </div>
+    <?php
+        }
+    } else {
+        echo '<div class="col-12 text-center"><p>No projects found. Try adjusting your search criteria.</p></div>';
+    }
+    ?>
+</div>
 
     <!-- Pagination -->
  <!-- Pagination -->

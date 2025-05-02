@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+
+
+
+
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 require_once 'includes/project_functions.php'; // for flashMessage
@@ -17,8 +22,8 @@ if (isset($_FILES['upload_file']) && $_FILES['upload_file']['error'] === UPLOAD_
     $fileData = file_get_contents($fileTmpPath);
 
     // Allowed MIME types
-    $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'text/plain'];
-    if (!in_array($fileType, $allowedTypes)) {
+    $allowedExts = ['jpg','jpeg','png','pdf','txt'];
+        if (!in_array($fileType, $allowedExts)) {
         flashMessage("File type not allowed. Only JPG, PNG, PDF, and TXT files are accepted.", "error");
         header("Location: upload.php");
         exit();

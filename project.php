@@ -90,12 +90,12 @@ mysqli_data_seek($teamResult, 0);
 
 
 ?>
-
 <div class="container mt-4">
     <div class="project-container">
         <!-- Project Header -->
         <div class="project-header glass">
             <div class="project-header-content">
+            
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 style="margin-bottom: 0;"><?= htmlspecialchars($project['title']) ?></h2>
 
