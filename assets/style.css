@@ -1212,3 +1212,10 @@ select option {
   color: var(--light-color);
   opacity: 0.8;
 }
+
+download-list-item{
+  list-style-type: none;
+  
+  padding: 0;
+  margin: 0;
+}

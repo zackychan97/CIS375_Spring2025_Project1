@@ -181,8 +181,45 @@ mysqli_data_seek($teamResult, 0);
                 <?php if ($isRegistered || $isOwner): ?>
                     <div class="project-resources glass">
                         <h3 class="section-title">Resources</h3>
+                        
+
+                        <?php
+                        
+                        $filesQuery = "
+                            SELECT id, file_name
+                              FROM uploads
+                             WHERE project_id = ?
+                             ORDER BY id DESC
+                        ";
+                        $filesStmt = mysqli_prepare($conn, $filesQuery);
+                        mysqli_stmt_bind_param($filesStmt, 'i', $project_id);
+                        mysqli_stmt_execute($filesStmt);
+                        $filesResult = mysqli_stmt_get_result($filesStmt);
+
+                    
+                        if (mysqli_num_rows($filesResult) > 0): ?>
+                            <ul class="list-unstyled mb-3">
+                                <?php while ($file = mysqli_fetch_assoc($filesResult)): ?>
+                                    <li class="download-list-item">
+                                    
+                                        <a 
+                                          href="download.php?id=<?= $file['id'] ?>"
+                                          class="d-block text-light"
+                                        >
+                                          <?= htmlspecialchars($file['file_name']) ?>
+                                        </a>
+                                    </li>
+                                <?php endwhile; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="text-muted mb-3">No files uploaded yet.</p>
+                        <?php 
+                        endif;
+                        mysqli_stmt_close($filesStmt);
+                        ?>
+
                         <div class="resources-actions">
-                            <a href="download.php" class="btn btn-secondary btn-sm mb-2">Download Resources</a>
+                            <!-- <a href="download_all.php?project_id=<?= $project_id ?>" class="btn btn-secondary btn-sm mb-2">Download Resources</a> -->
                             <a href="upload.php" class="btn btn-secondary btn-sm">Upload Resources</a>
                         </div>
                     </div>
