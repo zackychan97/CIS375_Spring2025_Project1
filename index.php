@@ -20,7 +20,7 @@ $featuredProjects = mysqli_fetch_all($featuredResult, MYSQLI_ASSOC);
 
     <!-- Featured Projects -->
     <section class="mb-5">
-        <h2 class="text-center mb-4">Featured Projects</h2>
+        <h1 class="text-center mb-4">Featured Projects</h1>
         <div class="featured-projects-container">
             <?php if (!empty($featuredProjects)): ?>
                 <?php foreach ($featuredProjects as $project): ?>
