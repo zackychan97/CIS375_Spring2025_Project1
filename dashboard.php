@@ -51,10 +51,9 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </div>
             <div class="col-md-4 text-md-end mt-4 mt-md-0">
                 <a href="edit_profile.php" class="btn btn-secondary me-2 px-2 py-1">Edit Profile</a>
-                <form method="POST" action="delete_profile.php" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                            <button type="submit" name="delete_project" class="btn btn-danger">Delete Project</button>
+                <form method="POST" action="delete_profile.php" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to delete this profile?');">
+                            <button type="submit" name="delete_project" class="btn btn-danger">Delete Profile</button>
                 </form>
-                <a href="delete_profile.php" class="btn btn-danger me-2 px-2 py-1">Delete Profile</a>
                 <a href="logout.php" class="btn btn-outline px-2 py-1">Logout</a>
             </div>
         </div>
