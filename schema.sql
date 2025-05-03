@@ -100,5 +100,7 @@ CREATE TABLE uploads (
     uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (contribution_id) REFERENCES contributions(id)
+    --JS: REMOVED FOREIGN KEY FROM SCHEMA FOR CONTRIBUTIONS TABLE
+    --JS: THIS IS BECAUSE THE CONTRIBUTIONS FUNCTIONALITY IS NOT YET CREATED
+    -- FOREIGN KEY (contribution_id) REFERENCES contributions(id)
 );

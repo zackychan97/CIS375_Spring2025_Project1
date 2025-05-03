@@ -1,10 +1,6 @@
 <?php
 session_start();
 
-
-
-
-
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 require_once 'includes/project_functions.php'; // for flashMessage
@@ -17,11 +13,14 @@ $user_id = $_SESSION['user_id'] ?? null;
 if (isset($_FILES['upload_file']) && $_FILES['upload_file']['error'] === UPLOAD_ERR_OK) {
     $fileTmpPath = $_FILES['upload_file']['tmp_name'];
     $fileName = basename($_FILES['upload_file']['name']);
-    $fileType = mime_content_type($fileTmpPath);
+    //JS: RETURNING EXTENSION INSTEAD OF MIME TYPE FOR TROUBLESHOOTING
+    $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+    //$fileType = mime_content_type($fileTmpPath);
     $fileSize = filesize($fileTmpPath);
     $fileData = file_get_contents($fileTmpPath);
 
     // Allowed MIME types
+    //JS: SWITCHED TO EXTENSIONS TO TROUBLESHOOT
     $allowedExts = ['jpg','jpeg','png','pdf','txt'];
         if (!in_array($fileType, $allowedExts)) {
         flashMessage("File type not allowed. Only JPG, PNG, PDF, and TXT files are accepted.", "error");
