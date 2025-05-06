@@ -115,6 +115,10 @@ h6 {
   margin-bottom: 1rem;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 p {
   margin-bottom: 1rem;
 }
@@ -234,6 +238,10 @@ a:hover {
 }
 
 .nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active::after {
   width: 100%;
 }
 
@@ -1022,7 +1030,7 @@ a:hover {
 
 .card-content {
   padding: 0 15px;
-  flex: 1 1 70%;    
+  flex: 1 1 70%;
 }
 
 /*Dropdown search display*/
@@ -1033,7 +1041,7 @@ select option {
 
 /* THUMBNAIL CSS VALUES */
 .project-thumb {
-  width: 120px;      
+  width: 120px;
   margin-right: 1rem;
 }
 /* Featured Projects */
@@ -1068,9 +1076,8 @@ select option {
   display: block;
 }
 
-
 .project-thumb {
-  flex: 0 0 30%;      
+  flex: 0 0 30%;
   margin-right: 1rem;
 }
 
@@ -1087,6 +1094,7 @@ select option {
 }
 
 .featured-project-content {
+  font-size: 1rem;
   padding: 30px;
   height: 100%;
   display: flex;
@@ -1094,7 +1102,8 @@ select option {
 }
 
 .featured-project-title {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  font-weight: 400;
   margin-bottom: 15px;
   color: var(--light-color);
   position: relative;
@@ -1224,9 +1233,9 @@ select option {
   opacity: 0.8;
 }
 
-download-list-item{
+download-list-item {
   list-style-type: none;
-  
+
   padding: 0;
   margin: 0;
 }

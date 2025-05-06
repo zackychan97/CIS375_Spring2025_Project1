@@ -22,15 +22,15 @@ $loggedIn = isset($_SESSION['user_id']);
 	<div class="container navbar-container">
 		<a class="navbar-brand" href="index.php">CollaboraNation</a>
 		<ul class="navbar-nav">
-			<li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-			<li class="nav-item"><a class="nav-link" href="projects.php">Projects</a></li>
+			<li class="nav-item"><a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>" href="index.php">Home</a></li>
+			<li class="nav-item"><a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'projects.php' ? 'active' : ''; ?>" href="projects.php">Projects</a></li>
 			
 			<?php
 			if ($loggedIn) {
-				echo '<li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>';
+				echo '<li class="nav-item"><a class="nav-link ' . (basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '') . '" href="dashboard.php">Dashboard</a></li>';
 			} else {
-				echo '<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>';
-				echo '<li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>';
+				echo '<li class="nav-item"><a class="nav-link ' . (basename($_SERVER['PHP_SELF']) == 'login.php' ? 'active' : '') . '" href="login.php">Login</a></li>';
+				echo '<li class="nav-item"><a class="nav-link ' . (basename($_SERVER['PHP_SELF']) == 'register.php' ? 'active' : '') . '" href="register.php">Register</a></li>';
 			}
 			?>
 		</ul>

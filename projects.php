@@ -134,7 +134,7 @@ $result = mysqli_stmt_get_result($stmt);
                 </div>
 
                 <div class="text-center mt-2">
-                    <button class="btn btn-secondary px-4 py-2 " type="submit">Search Projects</button>
+                    <button class="btn btn-outline px-4 py-2 " type="submit">Search Projects</button>
                 </div>
             </form>
 
