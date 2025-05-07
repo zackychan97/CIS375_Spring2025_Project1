@@ -97,3 +97,28 @@ if (function_exists('getProjectThumbnail')) {
         return "/CIS375_Spring2025_Project1/assets/placeholder.jpg";
     }
 }
+if (function_exists('getUserProPic')) {
+    // Do nothing, function already exists
+} else {
+    // FUNCTION TO GET USER PROFILE PICTURE
+
+    function getUserProPic(int $userId): string
+    {
+        global $conn;
+        $stmt = mysqli_prepare(
+            $conn,
+            "SELECT proPic FROM users WHERE id = ?"
+        );
+        mysqli_stmt_bind_param($stmt, 'i', $userId);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $pic);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
+
+        $path = __DIR__ . "/../public/uploads/{$pic}";
+        if ($pic && file_exists($path)) {
+            return "public/uploads/{$pic}";
+        }
+        return "assets/default-avatar.png";
+    }
+}

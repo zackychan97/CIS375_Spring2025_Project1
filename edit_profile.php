@@ -13,7 +13,7 @@ $email = $_SESSION['email'] ?? '';
 <div class="container mt-5">
     <h2>Edit Profile</h2>
 
-    <form action="edit_profile_process.php" method="post">
+    <form action="edit_profile_process.php" method="post" enctype="multipart/form-data" >
         <div class="form-group mb-3">
             <label for="name">Full Name</label>
             <input type="text" class="form-control" name="name" id="name"
@@ -35,6 +35,12 @@ $email = $_SESSION['email'] ?? '';
             <label for="confirm_password">Confirm New Password</label>
             <input type="password" class="form-control" name="confirm_password" id="confirm_password">
         </div>
+
+        <div class="form-group mb-4">
+        <label for="avatar">Profile Picture</label>
+        <input type="file" class="form-control" name="proPic" id="proPic" accept="image/*"
+        >
+    </div>
 
         <button type="submit" class="btn btn-secondary">Update Profile</button>
     </form>

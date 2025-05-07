@@ -94,7 +94,6 @@ lerna-debug.log
 tracking.md
 
 #functions
-functions.md
-checklist.md
-download_all.php
-seeds/
+public/uploads/proPric/*
+public\uploads\proPic\*
+public/uploads/proPic/*
