@@ -8,6 +8,7 @@ $user_id = $_SESSION['user_id'] ?? null;
 $title = $_SESSION['title'] ?? '';
 $name = $_SESSION['name'] ?? '';
 $fullname = trim($title . ' ' . $name);
+$proPic = getUserProPic($user_id);
 
 // QUERY TO SELECT USER PROJECTS FROM PROJECT MEMBERS TABLE
 $query = "
@@ -31,7 +32,18 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="glass p-5 mb-4">
         <!-- Header and Action Buttons -->
         <div class="row welcome-section">
-            <div class="col-md-8">
+            
+
+         
+ 
+            <div class="col-auto d-flex align-items-center">
+        <!-- PROFILE PIC -->
+        <img 
+          src="<?= htmlspecialchars($proPic) ?>" 
+          alt="Profile Picture" 
+          class="avatar-img rounded-circle ms-auto text-end"
+        >
+        <div>
 
                 <h2 class="mb-3">Welcome, <?= htmlspecialchars($fullname) ?></h2>
                 <p class="text-muted"><?= ucfirst(htmlspecialchars($role)) ?></p>
@@ -57,6 +69,7 @@ $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <a href="logout.php" class="btn btn-outline px-2 py-1">Logout</a>
             </div>
         </div>
+                </div>
 
         <!-- Projects -->
         <h3 class="section-heading">My Projects</h3>

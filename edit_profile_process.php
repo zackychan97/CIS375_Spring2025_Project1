@@ -41,7 +41,7 @@ if (!empty($new_password) || !empty($confirm_password)) {
         exit();
     }
 
-    //UPDATE WITH PASSWORD CHANGE
+    // UPDATE WITH PASSWORD CHANGE
     $hashedPassword = password_hash($new_password, PASSWORD_DEFAULT);
     $query = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -55,8 +55,46 @@ if (!empty($new_password) || !empty($confirm_password)) {
 
 // EXECUTE QUERY
 if (mysqli_stmt_execute($stmt)) {
+   //UPDATE SESSION VARIABLES
     $_SESSION['name'] = $name;
     $_SESSION['email'] = $email;
+
+    // —— proPic UPLOAD LOGIC ——
+    if (isset($_FILES['proPic']) && $_FILES['proPic']['error'] === UPLOAD_ERR_OK) {
+        $tmp      = $_FILES['proPic']['tmp_name'];
+        $origName = $_FILES['proPic']['name'];
+        $ext      = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+        $allowed  = ['jpg','jpeg','png','gif'];
+        $maxSize  = 2 * 1024 * 1024; // 2 MB
+
+        if (!in_array($ext, $allowed) || $_FILES['proPic']['size'] > $maxSize) {
+            flashMessage('proPic must be JPG/PNG/GIF under 2 MB.', 'warning');
+        } else {
+            // UPLOAD DIR
+            $uploadDir = __DIR__ . '/public/uploads/proPic/' . $user_id;
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $fileName = 'profile.' . $ext;
+            $dest     = $uploadDir . '/' . $fileName;
+
+            if (move_uploaded_file($tmp, $dest)) {
+                // UPDATE DB WITH PATH
+                $relPath = 'proPic/' . $user_id . '/' . $fileName;
+                $uStmt   = mysqli_prepare(
+                    $conn,
+                    "UPDATE users SET proPic = ? WHERE id = ?"
+                );
+                mysqli_stmt_bind_param($uStmt, 'si', $relPath, $user_id);
+                mysqli_stmt_execute($uStmt);
+                mysqli_stmt_close($uStmt);
+            } else {
+                flashMessage('Failed to upload profile picture.', 'error');
+            }
+        }
+    }
+
     flashMessage("Profile updated successfully!", "success");
     header("Location: dashboard.php");
     exit();
@@ -65,4 +103,3 @@ if (mysqli_stmt_execute($stmt)) {
     header("Location: edit_profile.php");
     exit();
 }
-
